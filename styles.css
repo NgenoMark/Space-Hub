@@ -1,37 +1,43 @@
-/* CSS for header elements */
-header {
-    width: 100%;
-    background-color: #333;
-    color: white;
-    padding: 20px;
+body {
     display: flex;
-    justify-content: space-between; /* Align items on the ends */
-    align-items: center; /* Center items vertically */
-}
-
-h1 {
-    margin: 0;
-}
-
-button {
-    margin: 0;
-    padding: 10px 20px;
-    background-color: transparent;
-    border: none;
-    color: white;
-    cursor: pointer;
-}
-
-button#log-btn {
-    background-color: aliceblue;
-    margin-left: 750px;
-}
-
-button#sign-btn {
-    background-color:aqua;
-    margin-right: 100px;
-}
-
-button:hover {
-    background-color: green;
-}
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #0A0A0A;
+    color: white; /* Added white color for all text */
+  }
+  
+  .wrapper {
+    width: 310px;
+    background-color: #2C2C2C;
+    color: white; /* Added white color for text inside wrapper */
+  }
+  
+  .wrapper h1 {
+    font-size: 36px;
+    text-align: center;
+  }
+  
+  .wrapper label {
+    font-size: 15px;
+    margin-left: 15px;
+  }
+  
+  .wrapper .box {
+    width: 80%;
+    margin: 15px 15px;
+  }
+  
+  .wrapper .input-box .forgot {
+    float: right;
+    font-size: 12px;
+  }
+  
+  .wrapper button {
+    display: block;
+    text-align: center;
+    width: 80%;
+    margin: 15px 15px;
+    background-color: greenyellow;
+  }
+  
