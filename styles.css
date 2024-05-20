@@ -8,14 +8,19 @@ body {
   }
   
   .wrapper {
+    padding : 15px 15px 15px 15px ;
     width: 310px;
     background-color: #2C2C2C;
     color: white; /* Added white color for text inside wrapper */
   }
   
-  .wrapper h1 {
-    font-size: 36px;
+  .topnot {
+    margin-bottom: var(--base-size-16);
+    color: var(--fgColor-default, var(--color-fg-default));
     text-align: center;
+    text-shadow: none;
+    background-color: transparent;
+    border: 0;
   }
   
   .wrapper label {
@@ -37,7 +42,13 @@ body {
     display: block;
     text-align: center;
     width: 80%;
-    margin: 15px 15px;
-    background-color: greenyellow;
+    margin: 15px auto; /* Center the button horizontally and add margin at top and bottom */
+    background-color: #6F9B3C;
+    border-radius: 20px; /* Add curved edges */
   }
+  
+  .wrapper button:hover {
+    background-color: #557a2a; /* Darker green background color on hover */
+  }
+  
   
