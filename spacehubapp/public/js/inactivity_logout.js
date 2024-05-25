@@ -1,7 +1,7 @@
 let inactivityTime = function () {
     let time;
-    let maxInactivityTime = 10 * 60 * 1000; // 10 minutes
-    let warningTime = 9 * 60 * 1000; // 9 minutes (1 minute before logout)
+    let maxInactivityTime = 1 * 60 * 1000; // 10 minutes
+    let warningTime = 0.8 * 60 * 1000; // 9 minutes (1 minute before logout)
 
     window.onload = resetTimer;
     document.onmousemove = resetTimer;
