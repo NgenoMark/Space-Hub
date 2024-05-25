@@ -43,7 +43,7 @@
         @livewireScripts
 
         <!-- Inactivity Logout Script -->
-        <script src="{{ asset('js/inactivity_logout.js') }}"></script>
+        <script type="module" src="{{ asset('js/inactivity_logout.js') }}"></script>
 
 
     </body>
