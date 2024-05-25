@@ -6,13 +6,6 @@
 
         <x-validation-errors class="mb-4" />
 
-        @if (session('message'))
-    <div class="alert alert-warning">
-        {{ session('message') }}
-    </div>
-@endif
-
-
         @session('status')
             <div class="mb-4 font-medium text-sm text-green-600">
                 {{ $value }}

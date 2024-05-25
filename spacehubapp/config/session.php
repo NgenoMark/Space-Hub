@@ -32,7 +32,8 @@ return [
     |
     */
 
-    'lifetime' => env('SESSION_LIFETIME', 20), // This value is in minutes. Ensure it's longer than your inactivity timeout.
+    'lifetime' => env('SESSION_LIFETIME', 120),
+
     'expire_on_close' => env('SESSION_EXPIRE_ON_CLOSE', false),
 
     /*
