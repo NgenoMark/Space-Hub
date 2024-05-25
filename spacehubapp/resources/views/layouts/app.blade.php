@@ -41,5 +41,10 @@
         @stack('modals')
 
         @livewireScripts
+
+        <!-- Inactivity Logout Script -->
+        <script src="{{ asset('js/inactivity-logout.js') }}"></script>
+
+        
     </body>
 </html>
