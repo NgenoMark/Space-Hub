@@ -41,5 +41,8 @@
         @stack('modals')
 
         @livewireScripts
+
+        <script src="{{ asset('js/inactivity-logout.js') }}" defer></script>
+
     </body>
 </html>
