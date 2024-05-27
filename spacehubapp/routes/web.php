@@ -16,13 +16,13 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
-    })->name('dashboard');
+    })->name('dashboard')->middleware((CheckIfLocked::class));
 
     // Lock screen routes
     Route::get('/lock', [LockScreenController::class, 'show'])->name('lock');
     Route::post('/unlock', [LockScreenController::class, 'unlock'])->name('unlock');
 
     // Resources
-    Route::resource('tasks', Controllers\TaskController::class);
-    Route::resource('users', Controllers\UserController::class);
+    Route::resource('tasks', Controllers\TaskController::class)->middleware(CheckIfLocked::class);
+    Route::resource('users', Controllers\UserController::class)->middleware(CheckIfLocked::class);
 });

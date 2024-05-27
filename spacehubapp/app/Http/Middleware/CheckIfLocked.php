@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Route;
 
 class CheckIfLocked
 {
@@ -17,7 +17,7 @@ class CheckIfLocked
     public function handle(Request $request, Closure $next): Response
     {
         // Check if the session has a locked key and the current path is not 'lock'
-        if(Session::has('locked')&&$request->path() != 'lock'){
+        if (session('locked', false) && !Route::is('lock') && !Route::is('unlock')) {
             return redirect()->route('lock');
         }
         return $next($request);

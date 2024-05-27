@@ -22,7 +22,7 @@ class LockScreenController extends Controller
         $user = Auth::user();
         if(Hash::check($request->password, $user->password)){
             // Redirect back to
-            session(['locked' => 'false']);
+            session(['locked' => false]);
             return redirect()->intended('/dashboard');
         }
 

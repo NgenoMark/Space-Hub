@@ -2,6 +2,7 @@ import './bootstrap';
 
 // Locks the screen until the page is loaded
 document.addEventListener('DOMContentLoaded', function () {
+    // Check for inactivity - no mouse movement, keyboard input, touch input, page reload
     let inactivityTime = function () {
         let time;
         window.onload = resetTimer;
@@ -10,22 +11,25 @@ document.addEventListener('DOMContentLoaded', function () {
         window.ontouchstart = resetTimer; // catches touchscreen swipes
         window.ontouchmove = resetTimer;  // required by some devices
         window.onclick = resetTimer;      // catches touchpad clicks
+        window.onkeydown = resetTimer;    // catches keyboard presses
 
-        function logout() {
+        // Lock screen without destroying the session
+        function lockScreen() {
             window.location.href = '/lock';
         }
 
+        // Reset the lockScreen timeout
         function resetTimer() {
             clearTimeout(time);
-            time = setTimeout(logout, 3000000);  // 5 minutes
+            time = setTimeout(lockScreen, 600000);  // 5 minutes
         }
     };
 
-    // Call the inactivityTime function
+    // Call the inactivityTime function - monitor for inactivity
     inactivityTime();
 
     // Lock screen button
     document.getElementById('lock-screen-button').addEventListener('click', function () {
-        window.location.href = '/lock';
+        lockScreen();
     });
 });
