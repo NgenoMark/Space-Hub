@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
+
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts -->
@@ -41,6 +42,9 @@
         @stack('modals')
 
         @livewireScripts
+
+        <script src="{{ asset('js/app.js') }}"></script>
+
 
         <script src="{{ asset('js/inactivity-logout.js') }}" defer></script>
 
