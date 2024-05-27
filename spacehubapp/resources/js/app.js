@@ -1,18 +1,31 @@
 import './bootstrap';
 
-import axios from 'axios';
+// Locks the screen until the page is loaded
+document.addEventListener('DOMContentLoaded', function () {
+    let inactivityTime = function () {
+        let time;
+        window.onload = resetTimer;
+        window.onmousemove = resetTimer;
+        window.onmousedown = resetTimer;  // catches touchscreen presses
+        window.ontouchstart = resetTimer; // catches touchscreen swipes
+        window.ontouchmove = resetTimer;  // required by some devices
+        window.onclick = resetTimer;      // catches touchpad clicks
 
-window.axios = axios;
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+        function logout() {
+            window.location.href = '/lock';
+        }
 
-let token = document.head.querySelector('meta[name="csrf-token"]');
+        function resetTimer() {
+            clearTimeout(time);
+            time = setTimeout(logout, 3000000);  // 5 minutes
+        }
+    };
 
-if (token) {
-    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
-} else {
-    console.error('CSRF token not found');
-}
+    // Call the inactivityTime function
+    inactivityTime();
 
-// Include credentials with requests
-axios.defaults.withCredentials = true;
-
+    // Lock screen button
+    document.getElementById('lock-screen-button').addEventListener('click', function () {
+        window.location.href = '/lock';
+    });
+});
