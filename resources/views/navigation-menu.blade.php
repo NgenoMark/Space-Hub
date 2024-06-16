@@ -111,14 +111,25 @@
                             <div class="border-t border-gray-200"></div>
 
                             <!-- Authentication -->
-                            <form method="POST" action="{{ route('logout') }}" x-data>
+                            <form method="POST" action="{{ route('logout') }}" x-data="logoutForm">
                                 @csrf
 
-                                <x-dropdown-link href="{{ route('logout') }}"
-                                         @click.prevent="$root.submit();">
+                                <x-responsive-nav-link href="{{ route('logout') }}" @click.prevent="confirmLogout">
                                     {{ __('Log Out') }}
-                                </x-dropdown-link>
+                                </x-responsive-nav-link>
                             </form>
+
+                            <script>
+                                document.addEventListener('alpine:init', () => {
+                                    Alpine.data('logoutForm', () => ({
+                                        confirmLogout() {
+                                            if (confirm('Are you sure you want to log out?')) {
+                                                this.$root.submit();
+                                            }
+                                        }
+                                    }));
+                                });
+                            </script>
                         </x-slot>
                     </x-dropdown>
                 </div>
