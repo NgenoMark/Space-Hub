@@ -110,16 +110,15 @@
 
                             <div class="border-t border-gray-200"></div>
 
-<!-- Authentication -->
-<form method="POST" action="{{ route('logout') }}" x-data>
-    @csrf
+                            <!-- Authentication -->
+                            <form method="POST" action="{{ route('logout') }}" x-data>
+                                @csrf
 
-    <x-dropdown-link href="{{ route('logout') }}"
-             @click.prevent="if (confirm('Are you sure you want to log out?')) { $root.submit(); }">
-        {{ __('Log Out') }}
-    </x-dropdown-link>
-</form>
-
+                                <x-dropdown-link href="{{ route('logout') }}"
+                                         @click.prevent="$root.submit();">
+                                    {{ __('Log Out') }}
+                                </x-dropdown-link>
+                            </form>
                         </x-slot>
                     </x-dropdown>
                 </div>
