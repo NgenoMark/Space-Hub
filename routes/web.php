@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers;
 use App\Http\Controllers\LockScreenController;
+use App\Http\Controllers\SuperAdminController;
 use App\Http\Middleware\AuthGates;
 use App\Http\Middleware\CheckIfLocked;
 
@@ -17,16 +18,15 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
-    })->name('dashboard')->middleware(['client'] , (CheckIfLocked::class));
+    })->name('dashboard')->middleware(['client', CheckIfLocked::class]);
 
     Route::get('/admin', function () {
         return view('admin');
-    })->name('admin')->middleware(['admin'], (CheckIfLocked::class));
+    })->name('admin')->middleware(['admin', CheckIfLocked::class]);
 
-    Route::get('/superadmin', function () {
-        return view('superadmin');
-    })->name('superadmin')->middleware(['superadmin'], (CheckIfLocked::class));
-
+    Route::get('/superadmin', [SuperAdminController::class, 'index'])
+        ->name('superadmin')
+        ->middleware(['superadmin', CheckIfLocked::class]);
 
     // Lock screen routes
     Route::get('/lock', [LockScreenController::class, 'show'])->name('lock');
