@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\CheckIfLocked;
 use App\Http\Middleware\SuperAdmin;
+use App\Http\Middleware\HostManager;
 use App\Http\Middleware\Admin;
 use App\Http\Middleware\Client;
 use Illuminate\Foundation\Application;
@@ -20,7 +21,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'superadmin'=>SuperAdmin::class,
             'admin'=>Admin::class,
-            'client'=>Client::class
+            'client'=>Client::class,
+            'hostmanager'=>HostManager::class
 
         ]);
     })

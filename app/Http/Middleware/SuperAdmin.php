@@ -37,6 +37,10 @@ class SuperAdmin
             return redirect()->route('dashboard');
         }
 
+        if($userRole=='hostmanager'){
+            return redirect()->route('hostmanager');
+        }
+
 
     }
 }

@@ -7,8 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
-
-class Client
+class HostManager
 {
     /**
      * Handle an incoming request.
@@ -23,20 +22,21 @@ class Client
         }
         $userRole=Auth::user()->role;
 
-        if($userRole=='client'){
+        if($userRole=='hostmanager'){
             return $next($request);
         }
 
-        if($userRole=='hostmanager'){
-            return redirect()->route('hostmanager');
+        if($userRole=='superadmin'){
+            return redirect()->route('superadmin');
         }
 
         if($userRole=='admin'){
             return redirect()->route('admin');
         }
 
-        if($userRole=='superadmin'){
-            return redirect()->route('superadmin');
+        if($userRole=='client'){
+            return redirect()->route('dashboard');
         }
+
     }
 }
