@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers;
 use App\Http\Controllers\LockScreenController;
 use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\AuthGates;
 use App\Http\Middleware\CheckIfLocked;
 
@@ -34,5 +35,13 @@ Route::middleware([
 
     // Resources
     Route::resource('tasks', Controllers\TaskController::class)->middleware(CheckIfLocked::class);
-    Route::resource('users', Controllers\UserController::class)->middleware([CheckIfLocked::class, AuthGates::class]);
+
+    // Resourceful routes for users with additional routes for editing and deleting users
+    Route::resource('users', UserController::class)
+        ->middleware([CheckIfLocked::class, AuthGates::class]);
+
+    // Custom routes for user edit and delete
+    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 });

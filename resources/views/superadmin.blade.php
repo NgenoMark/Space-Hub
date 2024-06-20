@@ -20,6 +20,7 @@
                                     <th class="px-4 py-2">{{ __('Name') }}</th>
                                     <th class="px-4 py-2">{{ __('Email') }}</th>
                                     <th class="px-4 py-2">{{ __('Role') }}</th>
+                                    <th class="px-4 py-2">{{ __('Actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -29,6 +30,14 @@
                                         <td class="border px-4 py-2">{{ $user->name }}</td>
                                         <td class="border px-4 py-2">{{ $user->email }}</td>
                                         <td class="border px-4 py-2">{{ $user->role }}</td>
+                                        <td class="border px-4 py-2">
+                                            <a href="{{ route('users.edit', $user->id) }}" class="text-blue-600 hover:text-blue-900">Edit</a>
+                                            <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="inline-block">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="text-red-600 hover:text-red-900 ml-2">Delete</button>
+                                            </form>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
