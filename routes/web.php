@@ -7,6 +7,11 @@ use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AuthGates;
 use App\Http\Middleware\CheckIfLocked;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\SpaceController;
+//use App\Http\Controllers\HomeController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -36,6 +41,22 @@ Route::middleware([
     // Lock screen routes
     Route::get('/lock', [LockScreenController::class, 'show'])->name('lock');
     Route::post('/unlock', [LockScreenController::class, 'unlock'])->name('unlock');
+
+    Route::get('/search', [App\Http\Controllers\UserController::class, 'search'])->name('search');
+    Route::post('/book', [App\Http\Controllers\UserController::class, 'book'])->name('book');
+
+    // Book and Serach functionality
+    Route::post('/spaces', [SpaceController::class, 'store'])->name('spaces.store');
+    Route::get('/search', [SearchController::class, 'search'])->name('search');
+    Route::post('/book', [BookingController::class, 'book'])->name('book');
+    Route::resource('spaces', SpaceController::class);
+    Route::resource('spaces.bookings', BookingController::class);
+    //Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
+    Route::resource('spaces', SpaceController::class)->except(['show']);
+    Route::get('spaces/{space}/bookings', [BookingController::class, 'index'])->name('spaces.bookings');
+    Route::get('spaces/{space}/bookings', [SpaceController::class, 'bookings'])->name('spaces.bookings');
+
+
 
     // Resources
     Route::resource('tasks', Controllers\TaskController::class)->middleware(CheckIfLocked::class);
