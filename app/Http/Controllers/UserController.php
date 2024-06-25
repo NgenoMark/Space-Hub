@@ -8,6 +8,30 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
+
+    public function search(Request $request)
+    {
+        $location = $request->input('location');
+        $capacity = $request->input('capacity');
+        $price_min = $request->input('price_min');
+        $price_max = $request->input('price_max');
+
+        $spaces = Space::where('location', 'LIKE', "%$location%")
+                        ->where('capacity', '>=', $capacity)
+                        ->whereBetween('price', [$price_min, $price_max])
+                        ->get();
+
+        return response()->json($spaces);
+    }
+
+    public function book(Request $request)
+    {
+        // Booking logic here
+        // e.g., save booking to the database
+
+        return redirect()->route('dashboard')->with('success', 'Space booked successfully!');
+    }
+
     // Display a listing of the users
     public function index()
     {
