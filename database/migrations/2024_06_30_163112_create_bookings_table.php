@@ -10,7 +10,7 @@ class CreateBookingsTable extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id('booking_id');
-            $table->foreignId('user_id')->constrained('users','users_id');
+            $table->foreignId('user_id')->constrained('users','id');
             $table->string('status', 20);
             $table->decimal('total_price', 10, 2);
             $table->timestamps();

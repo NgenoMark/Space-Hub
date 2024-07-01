@@ -15,7 +15,7 @@ class CreateSpacesTable extends Migration
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2);
             $table->foreignId('deal_id')->nullable()->constrained('deals','deal_id');
-            $table->foreignId('provider_id')->constrained('users','users_id');
+            $table->foreignId('provider_id')->constrained('users','id');
             $table->timestamps();
         });
     }
