@@ -1,7 +1,7 @@
 <x-app-layout>
-    <x-slot name="header">
+<x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight ml-4">
-            {{ __('Admin Dashboard') }}
+            {{ __('Bookings') }}
         </h2>
         <div class="flex space-x-8 mt-4 ml-4">
             <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">

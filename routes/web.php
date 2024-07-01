@@ -11,6 +11,30 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\SpaceController;
 //use App\Http\Controllers\HomeController;
+use App\Http\Controllers\WarehouseController;
+use App\Http\Controllers\AdminSpaceController;
+use App\Http\Controllers\AdminBookingController;
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    // Define route for listing bookings
+    Route::get('/admin/bookings', [AdminBookingController::class, 'index'])->name('admin.bookings.list');
+});
+
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/spaces/create', [AdminSpaceController::class, 'create'])->name('admin.spaces.create');
+    Route::get('/admin/spaces', [AdminSpaceController::class, 'index'])->name('admin.spaces.index');
+    Route::get('/admin/spaces/edit/{id}', [AdminSpaceController::class, 'edit'])->name('admin.spaces.edit');
+    Route::post('/admin/spaces/update/{id}', [AdminSpaceController::class, 'update'])->name('admin.spaces.update');
+});
+
+
+
+Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
+
+
+Route::get('/warehouses', [WarehouseController::class, 'index'])->name('warehouses.index');
+
 
 
 Route::get('/', function () {
@@ -69,4 +93,8 @@ Route::middleware([
     Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+
+    Route::get('/spaces/index', 'SpacesController@index')->name('spaces.index');
+Route::get('/spaces/bookings/{space}', 'SpacesController@bookings')->name('spaces.bookings');
+Route::get('/spaces/create', 'SpacesController@create')->name('spaces.create');
 });
