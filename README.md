@@ -134,4 +134,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ---
 
-This version includes clearer headings, simplified instructions, and maintains a structured flow to guide users through setting up, configuring, using, and contributing to Space Hub effectively. Adjust placeholders (`your_database_name`, `your_database_username`, `your_database_password`) with your actual database credentials before publishing.
+
