@@ -166,4 +166,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ---
 
-This version includes specific instructions for installing PHP, Composer, MySQL, and Node.js & NPM using Git Bash on a Windows environment. Adjust these instructions as needed based on your system requirements or preferences.
+
