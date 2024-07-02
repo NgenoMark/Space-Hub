@@ -12,6 +12,8 @@ class CreateSpacesTable extends Migration
             $table->id('space_id');
             $table->string('space_name', 100);
             $table->string('space_type', 50);
+            $table->string('location', 50);
+            $table->decimal('capacity', 10, 2);
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2);
             $table->foreignId('deal_id')->nullable()->constrained('deals','deal_id');
@@ -25,3 +27,4 @@ class CreateSpacesTable extends Migration
         Schema::dropIfExists('spaces');
     }
 }
+

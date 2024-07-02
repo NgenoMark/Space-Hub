@@ -11,6 +11,7 @@ class CreateWarehousesTable extends Migration
         Schema::create('warehouses', function (Blueprint $table) {
             $table->id('warehouse_id');
             $table->string('warehouse_name', 100);
+            $table->string('location', 100);
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2);
             $table->foreignId('deal_id')->nullable()->constrained('deals','deal_id');
