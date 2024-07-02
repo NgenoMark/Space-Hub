@@ -1,11 +1,12 @@
 <?php 
-// app/Http/Controllers/SpaceController.php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Space;
 use App\Models\Booking;
+use Illuminate\Support\Facades\Auth;
+
+
 
 class SpaceController extends Controller
 {
@@ -16,11 +17,30 @@ class SpaceController extends Controller
         return view('spaces.index', compact('spaces'));
     }
 
+
+public function mySpaces()
+{
+    // Fetch spaces related to the authenticated user
+    $spaces = Space::where('provider_id', Auth::id())->get();
+
+    return view('admin.spaces.my-spaces', compact('spaces'));
+}
+
+public function edit($space_id)
+{
+    $space = Space::findOrFail($space_id);
+    // Other logic for editing
+    return view('admin.spaces.edit', compact('space'));
+}
+
     // Show the form for creating a new space
     public function create()
     {
         return view('spaces.create');
     }
+    
+
+    
 
     // Store a newly created space in storage
     public function store(Request $request)
@@ -48,11 +68,11 @@ class SpaceController extends Controller
         return view('spaces.show', compact('space'));
     }
 
-    // Show the form for editing the specified space
+    /* Show the form for editing the specified space
     public function edit(Space $space)
     {
         return view('spaces.edit', compact('space'));
-    }
+    } */
 
     // Update the specified space in storage
     public function update(Request $request, Space $space)
@@ -111,6 +131,39 @@ class SpaceController extends Controller
 
         return response()->json($spaces);
     }
+
+    // Show the form for booking a specific space
+    public function showBookingForm($id)
+    {
+        $space = Space::findOrFail($id);
+        return view('spaces.book', compact('space'));
+    }
+
+    // Book the specified space
+    public function book(Request $request, $id)
+    {
+        $request->validate([
+            'booking_date' => 'required|date',
+            'notes' => 'nullable|string',
+        ]);
+
+        $space = Space::findOrFail($id);
+
+        // Save booking logic here
+
+        return redirect()->route('dashboard')->with('success', 'Booking successful!');
+
+        
+    }
+
+    public function mybooking()
+{
+    // Logic to fetch and display bookings related to the authenticated user
+    // Example: Fetch bookings from the database and return a view
+    $bookings = Booking::where('user_id', Auth::id())->get();
+    return view('spaces.book', compact('bookings'));
+}
+
 
     // Display bookings for a specific space
     public function bookings(Space $space)
