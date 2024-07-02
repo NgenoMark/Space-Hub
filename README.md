@@ -51,9 +51,12 @@ Before you begin, ensure you have met the following requirements:
     ```
 7. Configure your database settings in the `.env` file:
     ```sh
-    DB_DATABASE=your_database_name
-    DB_USERNAME=your_database_username
-    DB_PASSWORD=your_database_password
+DB_CONNECTION=your_connection_name eg mysql
+DB_HOST=your_host eg localhost
+DB_PORT= your_port eg 3306
+DB_DATABASE=database_name eg laravel
+DB_USERNAME= your_username eg root
+DB_PASSWORD=your password eg xxxxxxxx
     ```
 8. Run the database migrations:
     ```sh
