@@ -64,4 +64,10 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
+
+        // Define the relationship with spaces
+        public function spaces()
+        {
+            return $this->hasMany(Space::class, 'provider_id');
+        }
 }
