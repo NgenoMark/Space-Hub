@@ -1,5 +1,5 @@
 <x-app-layout>
-<x-slot name="header">
+    <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight ml-4">
             {{ __('Bookings') }}
         </h2>
@@ -10,7 +10,7 @@
             <x-nav-link href="{{ route('admin.spaces.index') }}" :active="request()->routeIs('admin.spaces.index')">
                 {{ __('My Space') }}
             </x-nav-link>
-            <x-nav-link href="{{ route('admin.bookings.list') }}" :active="request()->routeIs('admin.bookings.list')">
+            <x-nav-link href="{{ route('admin.bookings.list') }}" :active="request()->routeIs('admin.bookings.list')" onclick="loadContent('{{ route('admin.bookings.list') }}'); return false;">
                 {{ __('Bookings') }}
             </x-nav-link>
             <x-nav-link href="{{ route('admin.spaces.create') }}" :active="request()->routeIs('admin.spaces.create')">
@@ -28,23 +28,39 @@
             </div>
         </div>
     </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.update-status-button').forEach(button => {
+            button.addEventListener('click', function () {
+                const form = this.closest('tr').querySelector('.update-status-form');
+                const statusDropdown = form.querySelector('.status-dropdown');
+                const status = statusDropdown.value;
+                const bookingId = statusDropdown.dataset.id;
 
+                fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ status: status })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Status updated successfully');
+                    } else {
+                        alert('Error updating status');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error updating status');
+                });
+            });
+        });
+    });
+</script>
 
-
-
-
-    <script>
-        function loadContent(url) {
-            fetch(url, {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('content').innerHTML = data.view;
-            })
-            .catch(error => console.error('Error loading content:', error));
-        }
-    </script>
 </x-app-layout>
