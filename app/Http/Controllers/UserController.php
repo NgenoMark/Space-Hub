@@ -26,10 +26,31 @@ class UserController extends Controller
 
     public function book(Request $request)
     {
-        // Booking logic here
-        // e.g., save booking to the database
 
-        return redirect()->route('dashboard')->with('success', 'Space booked successfully!');
+        \Log::info($request->all()); // Log the request data
+        $request->validate([
+            'space_id' => 'required|exists:spaces,space_id',
+            'user_id' => 'required|exists:users,id',
+            'location' => 'required|string|max:255',
+            'booking_date' => 'required|date',
+            'price' => 'required|numeric|min:0',
+            'status' => 'required|string|max:20',
+        ]);
+    
+        $booking = Booking::create([
+            'space_id' => $request->space_id,
+            'user_id' => $request->user_id,
+            'location' => $request->location,
+            'booking_date' => $request->booking_date,
+            'total_price' => $request->price,
+            'status' => $request->status,
+        ]);
+    
+        if ($booking) {
+            return redirect()->route('dashboard')->with('success', 'Booking created successfully!');
+        } else {
+            return back()->withInput()->with('error', 'Failed to create booking.');
+        }
     }
 
     // Display a listing of the users
