@@ -35,24 +35,31 @@ class BookingController extends Controller
     // Store a newly created booking in storage
     public function store(Request $request)
     {
-        $request->validate([
-            'space_id' => 'required|exists:spaces,space_id',
-            'user_id' => 'required|exists:users,id',
-            'booking_date' => 'required|date',
-            'total_price' => 'required|numeric',
-            'status' => 'required|string',
+        // Validate incoming request
+        $validatedData = $request->validate([
+            'space_id' => 'required|exists:spaces,id',
+            'full_name' => 'required|string',
+            'phone_number' => 'required|string',
+            'email' => 'required|email',
+            'date' => 'required|date',
         ]);
-
-        Booking::create([
-            'space_id' => $request->space_id,
-            'user_id' => $request->user_id,
-            'booking_date' => $request->booking_date,
-            'total_price' => $request->total_price,
-            'status' => $request->status,
-        ]);
-
-        return redirect()->route('/dashboard')->with('success', 'Space booked successfully!');
+    
+        // Create a new booking instance
+        $booking = new Booking();
+        $booking->space_id = $validatedData['space_id'];
+        $booking->full_name = $validatedData['full_name'];
+        $booking->phone_number = $validatedData['phone_number'];
+        $booking->email = $validatedData['email'];
+        $booking->booking_date = $validatedData['date'];
+        $booking->status = 'Pending'; // Set status to Pending for new bookings
+        
+        // Save the booking
+        $booking->save();
+    
+        // Optionally, you can redirect the user after successful booking
+        return redirect()->route('bookings.index')->with('success', 'Booking created successfully!');
     }
+    
 
     public function list(Request $request)
     {
@@ -134,12 +141,15 @@ class BookingController extends Controller
 // app/Http/Controllers/BookingController.php
 public function showBookingForm($space_id)
 {
+    // For debugging: log the space_id instead of returning it
+    \Log::info('The space ID is: ' . $space_id);
 
-    return "The space ID is: " . $space_id;
-
+    // Fetch the space and return the booking form view
     $space = Space::findOrFail($space_id);
-    return view('booking.form', compact('space'));
+    return view('bookings.form', compact('space'));
 }
+
+
 
 
     
@@ -198,6 +208,8 @@ public function showBookingForm($space_id)
             return back()->withInput()->with('error', 'Failed to create booking.');
         }
     }
+
+    
     
 }
 

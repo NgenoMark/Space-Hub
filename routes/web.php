@@ -79,6 +79,10 @@ Route::middleware([
     Route::post('/spaces/{space}/book', [SpaceController::class, 'book'])->name('spaces.book.submit');
     Route::get('/spaces/booking-form', [SpaceController::class, 'showBookingForm'])->name('spaces.book');
     Route::get('/spaces/book', [SpaceController::class, 'book'])->name('spaces.book');
+    Route::post('/booking/store', [BookingController::class, 'store'])->name('booking.store');
+    //Route::post('/bookings', [BookingController::class, 'store'])->name('booking.store');
+
+
 
     // Warehouse routes
     Route::get('/warehouses', [WarehouseController::class, 'index'])->name('warehouses.index');

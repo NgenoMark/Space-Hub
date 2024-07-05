@@ -64,7 +64,7 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $space->capacity }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $space->price }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <form method="GET" action="{{ route('booking.form', ['space_id' => $space->space_id]) }}">
+                                            <form method="GET" action="{{ route('bookings.form', ['space_id' => $space->space_id]) }}">
                                                 <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-md">Select</button>
                                             </form>
                                         </td>
