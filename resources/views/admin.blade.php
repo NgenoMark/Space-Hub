@@ -24,27 +24,56 @@
             <div id="content" class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <p>Welcome to your admin dashboard!</p>
+
+                    <!-- Canvas for the chart -->
+                    <canvas id="spaceOwnerChart" width="400" height="200"></canvas>
                 </div>
             </div>
         </div>
     </div>
 
-
-
-
+    <!-- Include Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-        function loadContent(url) {
-            fetch(url, {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('content').innerHTML = data.view;
-            })
-            .catch(error => console.error('Error loading content:', error));
+        // Function to fetch chart data and render the chart
+        function loadChart() {
+            fetch('{{ route('spaceowner.chartdata') }}')
+                .then(response => response.json())
+                .then(data => {
+                    // Prepare data for Chart.js
+                    const labels = data.map(item => item.spaceName);
+                    const values = data.map(item => item.bookingsCount);
+
+                    // Create the chart
+                    const ctx = document.getElementById('spaceOwnerChart').getContext('2d');
+                    const chart = new Chart(ctx, {
+                        type: 'bar', // You can change this to the type of chart you want
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Bookings Count',
+                                data: values,
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                })
+                .catch(error => console.error('Error loading chart data:', error));
         }
+
+        // Load the chart when the page is fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            loadChart();
+        });
     </script>
 </x-app-layout>

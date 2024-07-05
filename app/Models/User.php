@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -66,9 +67,15 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-        // Define the relationship with spaces
-        public function spaces()
-        {
-            return $this->hasMany(Space::class, 'provider_id');
-        }
+    // Define the relationship with spaces
+    public function spaces()
+    {
+        return $this->hasMany(Space::class, 'provider_id');
+    }
+
+    // Define the relationship with bookings
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class, 'user_id');
+    }
 }

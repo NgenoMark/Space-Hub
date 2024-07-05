@@ -37,6 +37,7 @@ class BookingController extends Controller
 
         Booking::create([
             'space_id' => $request->space_id,
+            'space_name' => $request->space_name,
             'user_id' => $request->user_id,
             'booking_date' => $request->booking_date,
             'total_price' => $request->total_price,
@@ -151,5 +152,3 @@ class BookingController extends Controller
 
     
 }
-
-

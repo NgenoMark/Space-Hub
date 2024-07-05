@@ -13,6 +13,7 @@ use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\AdminSpaceController;
 use App\Http\Controllers\AdminBookingController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\SpaceOwnerController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -58,6 +59,8 @@ Route::middleware([
         Route::get('/admin/spaces', [AdminSpaceController::class, 'index'])->name('admin.spaces.index');
         Route::get('/admin/spaces/edit/{id}', [AdminSpaceController::class, 'edit'])->name('admin.spaces.edit');
         Route::post('/admin/spaces/store', [AdminSpaceController::class, 'store'])->name('admin.spaces.store');
+        Route::get('/space-owner/chart-data', [SpaceOwnerController::class, 'getChartData'])->name('spaceowner.chartdata');
+        Route::delete('/spaces/{space}', 'SpaceController@destroy')->name('spaces.destroy');
         //Route::get('/admin/spaces', [SpaceController::class, 'index'])->name('admin.spaces.index');
 
 
