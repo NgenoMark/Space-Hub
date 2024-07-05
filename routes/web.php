@@ -65,6 +65,12 @@ Route::middleware([
         Route::put('/admin/bookings/{id}', [AdminBookingController::class, 'update'])->name('admin.bookings.update');
     });
 
+    Route::get('/admin/bookings', [AdminBookingController::class, 'index'])->name('admin.bookings.index');
+    Route::post('/admin/bookings/update-status/{booking}', [AdminBookingController::class, 'updateStatus'])->name('admin.bookings.updateStatus');
+    Route::get('/admin/bookings', [AdminBookingController::class, 'index'])->name('admin.bookings.list');
+    Route::get('/bookings', [AdminBookingController::class, 'index'])->name('admin.bookings.index');
+    Route::post('/bookings/update/{booking}', [AdminBookingController::class, 'updateStatus'])->name('admin.bookings.updateStatus');
+
     // Booking routes
     Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
     Route::get('/bookings/{space_id}/form', [BookingController::class, 'showBookingForm'])->name('booking.form');
@@ -80,7 +86,11 @@ Route::middleware([
     Route::get('/spaces/booking-form', [SpaceController::class, 'showBookingForm'])->name('spaces.book');
     Route::get('/spaces/book', [SpaceController::class, 'book'])->name('spaces.book');
     Route::post('/booking/store', [BookingController::class, 'store'])->name('booking.store');
-    //Route::post('/bookings', [BookingController::class, 'store'])->name('booking.store');
+    Route::post('/bookings', [BookingController::class, 'store'])->name('booking.store');
+    // routes/web.php
+Route::post('/booking/store', [BookingController::class, 'store'])->name('booking.store');
+Route::get('/booking/form/{space_id}', [BookingController::class, 'showBookingForm'])->name('booking.form');
+
 
 
 

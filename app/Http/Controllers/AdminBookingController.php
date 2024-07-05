@@ -11,6 +11,8 @@ class AdminBookingController extends Controller
     public function index()
     {
         // Logic to fetch and return bookings data
+        $bookings = Booking::all(); // Example query, adjust as per your logic
+
         return view('admin.bookings.index'); // Adjust this according to your view structure
     }
 
@@ -36,6 +38,21 @@ public function update(Request $request, $id)
     $booking->update($request->all());
 
     return redirect()->route('admin.bookings.list')->with('success', 'Booking updated successfully.');
+}
+
+public function updateStatus(Request $request, Booking $booking)
+{
+    // Validate the request
+    $request->validate([
+        'status' => ['required', 'in:Pending,Confirmed,Cancelled'],
+    ]);
+
+    // Update the booking status
+    $booking->status = $request->status;
+    $booking->save();
+
+    // Return a JSON response indicating success
+    return response()->json(['success' => true]);
 }
 
 
