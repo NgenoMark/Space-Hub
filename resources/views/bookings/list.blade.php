@@ -6,6 +6,9 @@
                 <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                 <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                 <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Full Name</th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone Number</th>
                 <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
             </tr>
         </thead>
@@ -13,20 +16,13 @@
             @foreach ($bookings as $booking)
                 <tr>
                     <td class="px-6 py-4 whitespace-nowrap">{{ $booking->booking_date }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <form method="POST" action="{{ route('admin.bookings.updateStatus', $booking->booking_id) }}" class="update-status-form">
-                            @csrf
-                            <select name="status" class="status-dropdown" data-id="{{ $booking->booking_id }}">
-                                <option value="pending" {{ $booking->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                                <option value="accepted" {{ $booking->status == 'accepted' ? 'selected' : '' }}>Accepted</option>
-                                <option value="denied" {{ $booking->status == 'denied' ? 'selected' : '' }}>Denied</option>
-                            </select>
-                            <button type="submit" class="hidden submit-status-button"></button>
-                        </form>
-                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">{{ $booking->status }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">{{ $booking->total_price }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">{{ $booking->full_name }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">{{ $booking->email }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">{{ $booking->phone_number }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <button class="update-status-button px-4 py-2 bg-blue-500 text-white rounded-md">Update</button>
+                        <a href="{{ route('admin.bookings.edit', $booking->booking_id) }}" class="px-4 py-2 bg-blue-500 text-white rounded-md">Update</a>
                     </td>
                 </tr>
             @endforeach

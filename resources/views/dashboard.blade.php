@@ -12,12 +12,12 @@
         <x-nav-link href="{{ route('spaces.index') }}" :active="request()->routeIs('spaces.index')">
             {{ __('Spaces') }}
         </x-nav-link>
-        <x-nav-link href="{{ route('warehouses.index') }}" :active="request()->routeIs('warehouses.index')">
+        {{--<x-nav-link href="{{ route('warehouses.index') }}" :active="request()->routeIs('warehouses.index')">
             {{ __('Warehouses') }}
-        </x-nav-link>
+        </x-nav-link> --}}
         <x-nav-link href="{{ route('bookings.index') }}" :active="request()->routeIs('bookings.index')">
-            {{ __('My Bookings') }}
-        </x-nav-link>
+    {{ __('My Bookings') }}
+</x-nav-link>
     </div>
 
 
@@ -25,18 +25,5 @@
         <!-- Dynamic content will be loaded here -->
     </div>
 
-    <script>
-        function loadContent(url) {
-            fetch(url, {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('content').innerHTML = data;
-            })
-            .catch(error => console.error('Error loading content:', error));
-        }
-    </script>
+
 </x-app-layout>

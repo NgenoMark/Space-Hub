@@ -9,12 +9,18 @@ class Booking extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'booking_id'; // Specify the primary key
+
     protected $fillable = [
-        'space_id',
         'user_id',
+        'space_id',
+        'full_name',
+        'email',
+        'phone_number',
         'booking_date',
-        'total_price',
+        'location',
         'status',
+        'total_price',
     ];
 
     public function space()

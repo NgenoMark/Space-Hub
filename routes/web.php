@@ -67,13 +67,71 @@ Route::middleware([
 
     });
 
+    Route::get('/bookings/{space_id}/form', [BookingController::class, 'showBookingForm'])->name('booking.form');
+Route::post('/bookings/{space_id}/submit', [BookingController::class, 'submitBookingForm'])->name('booking.submit');
+Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
+
+// routes/web.php
+
+
+
+Route::get('/book/{id}', [BookingController::class, 'showBookingForm'])->name('booking.form');
+Route::post('/book', [BookingController::class, 'book'])->name('book');
+
+Route::get('/book/{id}', [BookingController::class, 'showBookingForm'])->name('book.form');
+Route::post('/book', [BookingController::class, 'book'])->name('book');
     // Space routes
     Route::resource('spaces', SpaceController::class)->except(['show']);
     Route::get('spaces/{space}/bookings', [BookingController::class, 'index'])->name('spaces.bookings');
     Route::get('/spaces/search', [SpaceController::class, 'search'])->name('spaces.search');
     Route::get('/spaces/{space}/book', [SpaceController::class, 'showBookingForm'])->name('spaces.book');
     Route::post('/spaces/{space}/book', [SpaceController::class, 'book'])->name('spaces.book.submit');
-    Route::get('/spaces/book', [SpaceController::class, 'mybooking'])->name('spaces.book');
+    //Route::get('/spaces/book', [SpaceController::class, 'mybooking'])->name('spaces.book');
+    //Route::get('/spaces/{id}/book', [SpaceController::class, 'showBookingForm'])->name('spaces.book.form');
+    //Route::post('/spaces/{id}/book', [SpaceController::class, 'book'])->name('spaces.book');
+    Route::get('/spaces/booking-form', [SpaceController::class, 'showBookingForm'])->name('spaces.book');
+    Route::get('/spaces/book', [SpaceController::class, 'book'])->name('spaces.book');
+    // routes/web.php
+Route::get('/my-bookings', [BookingController::class, 'index'])->name('bookings.index');
+// routes/web.php
+Route::get('/booking/form/{space_id}', [BookingController::class, 'showBookingForm'])->name('booking.form');
+
+
+Route::get('/bookings/{space_id}/form', [BookingController::class, 'showBookingForm'])->name('booking.form');
+Route::post('/bookings/{space_id}/submit', [BookingController::class, 'submitBookingForm'])->name('booking.submit');
+
+    Route::post('/admin/bookings/update-status/{booking}', [AdminBookingController::class, 'updateStatus'])->name('admin.bookings.updateStatus');
+
+
+    Route::get('/admin/bookings/{id}/edit', [AdminBookingController::class, 'edit'])->name('admin.bookings.edit');
+Route::put('/admin/bookings/{id}', [AdminBookingController::class, 'update'])->name('admin.bookings.update');
+
+
+
+
+    Route::get('/spaces/booking-form', [SpaceController::class, 'showBookingForm'])->name('spaces.book');
+    Route::get('/spaces', [SpaceController::class, 'index'])->name('spaces.index');
+
+
+    Route::get('/admin/spaces/{id}/edit', [AdminSpaceController::class, 'edit'])->name('admin.spaces.edit');
+Route::put('/admin/spaces/{id}', [AdminSpaceController::class, 'update'])->name('admin.spaces.update');
+Route::delete('/admin/spaces/{id}', [AdminSpaceController::class, 'destroy'])->name('admin.spaces.destroy');
+
+
+
+
+
+// Delete route
+Route::delete('admin/spaces/{id}', [AdminSpaceController::class, 'destroy'])->name('admin.spaces.destroy');
+
+
+    // routes/web.php
+
+Route::get('/booking-form', [BookingController::class, 'showBookingForm'])->name('booking.form');
+
+
+    // Route for handling the booking form submission
+    //Route::post('/spaces/{id}/book', [BookingController::class, 'store'])->name('spaces.book.store');
 
     // Warehouse routes
     Route::get('/warehouses', [WarehouseController::class, 'index'])->name('warehouses.index');

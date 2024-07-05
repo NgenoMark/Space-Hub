@@ -13,9 +13,9 @@
         <x-nav-link href="{{ route('spaces.index') }}" :active="request()->routeIs('spaces.index')">
             {{ __('Spaces') }}
         </x-nav-link>
-        <x-nav-link href="{{ route('warehouses.index') }}" :active="request()->routeIs('warehouses.index')">
+        {{--<x-nav-link href="{{ route('warehouses.index') }}" :active="request()->routeIs('warehouses.index')">
             {{ __('Warehouses') }}
-        </x-nav-link>
+        </x-nav-link> --}}
         <x-nav-link href="{{ route('spaces.book') }}" :active="request()->routeIs('spaces.book')">
     {{ __('My Bookings') }}
 </x-nav-link>
