@@ -7,23 +7,27 @@ use App\Models\Space;
 
 class SpaceOwnerController extends Controller
 {
-    // Method to get chart data
+    // Method to get chart data (returns JSON)
     public function getChartData()
     {
-        // Fetch data from the database, e.g., bookings per month for the space owner
-        $spaces = Space::where('provider_id', auth()->id()) // Assuming you have owner_id to filter the spaces owned by the logged-in owner
-                       ->with('bookings') // Assuming you have a relationship 'bookings' defined
+        // Assuming the space owner is authenticated and we use their ID
+        $spaces = Space::where('provider_id', auth()->id()) // Assuming provider_id is the field to filter the spaces
+                       ->withCount('bookings') // Get the count of bookings for each space
                        ->get();
 
-        // Process the data as needed for the chart
-        $data = $spaces->map(function($space) {
-            return [
-                'spaceName' => $space->name,
-                'bookingsCount' => $space->bookings->count(),
-                // Add more metrics as needed
-            ];
-        });
+        // Prepare data for Chart.js
+        $labels = $spaces->pluck('name'); // Space names
+        $data = $spaces->pluck('bookings_count'); // Corresponding booking counts
 
-        return response()->json($data);
+        return response()->json([
+            'labels' => $labels,
+            'data' => $data
+        ]);
+    }
+
+    // Method to render the chart view
+    public function showChart()
+    {
+        return view('spaces.chart');
     }
 }

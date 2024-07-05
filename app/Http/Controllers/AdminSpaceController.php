@@ -19,31 +19,33 @@ class AdminSpaceController extends Controller
 
     public function edit($id)
     {
-        // Find the space by ID and ensure it belongs to the authenticated admin
-        $space = Space::where('id', $id)->where('provider_id', auth()->id())->firstOrFail();
-
+        $space = Space::findOrFail($id);
         return view('admin.spaces.edit', compact('space'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $space_id)
     {
-        // Validate the incoming request data
         $request->validate([
-            'space_name' => 'required|string|max:100',
-            'space_type' => 'required|string|max:50',
-            'location' => 'required|string|max:50',
-            'description' => 'nullable|string',
+            'space_name' => 'required|string|max:255',
+            'space_type' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
             'capacity' => 'required|numeric',
+            'description' => 'required|string',
             'price' => 'required|numeric',
         ]);
 
-        // Find the space by ID and ensure it belongs to the authenticated admin
-        $space = Space::where('id', $id)->where('provider_id', auth()->id())->firstOrFail();
-
-        // Update the space with the new data
+        $space = Space::findOrFail($space_id);
         $space->update($request->all());
 
-        return redirect()->route('spaces.myspace')->with('success', 'Space updated successfully.');
+        return redirect()->route('admin.spaces.index')->with('success', 'Space updated successfully.');
+    }
+
+    public function destroy($id)
+    {
+        $space = Space::findOrFail($id);
+        $space->delete();
+
+        return redirect()->route('admin.spaces.index')->with('success', 'Space deleted successfully.');
     }
 
     public function create()

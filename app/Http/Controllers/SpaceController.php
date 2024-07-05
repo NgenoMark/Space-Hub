@@ -8,14 +8,18 @@ use Illuminate\Support\Facades\Auth;
 
 
 
+
 class SpaceController extends Controller
 {
-    // Display a listing of the spaces
     public function index()
     {
-        $spaces = Space::all();
+        $spaces = Space::all(); // Fetch all spaces
+    
         return view('spaces.index', compact('spaces'));
+
+        
     }
+    
 
 
 public function mySpaces()
@@ -131,55 +135,69 @@ public function edit($space_id)
     {
         $location = $request->input('location');
         $capacity = $request->input('capacity');
-        $priceMin = $request->input('price_min');
-        $priceMax = $request->input('price_max');
-
+        $price_min = $request->input('price_min');
+        $price_max = $request->input('price_max');
+    
         $query = Space::query();
-
+    
         if ($location) {
-            $query->where('location', 'like', '%' . $location . '%');
+            $query->where('location', 'like', "%{$location}%");
         }
-
+    
         if ($capacity) {
             $query->where('capacity', '>=', $capacity);
         }
-
-        if ($priceMin !== null) {
-            $query->where('price', '>=', $priceMin);
+    
+        if ($price_min) {
+            $query->where('price', '>=', $price_min);
         }
-
-        if ($priceMax !== null) {
-            $query->where('price', '<=', $priceMax);
+    
+        if ($price_max) {
+            $query->where('price', '<=', $price_max);
         }
-
+    
         $spaces = $query->get();
-
-        return response()->json($spaces);
+    
+        return view('spaces.index', compact('spaces'));
     }
+    
 
     // Show the form for booking a specific space
-    public function showBookingForm($id)
+    public function showBookingForm()
     {
-        $space = Space::findOrFail($id);
-        return view('spaces.book', compact('space'));
+        $spaces = Space::all(); // Example query to fetch all spaces, adjust as per your actual data retrieval logic
+    
+        return view('spaces.booking_form', compact('spaces'));
     }
+
+    
+    
 
     // Book the specified space
     public function book(Request $request, $id)
     {
         $request->validate([
+            'full_name' => 'required|string|max:100',
+            'email' => 'required|email|max:255',
+            'phone_number' => 'required|string|max:20',
             'booking_date' => 'required|date',
-            'notes' => 'nullable|string',
         ]);
-
-        $space = Space::findOrFail($id);
-
-        // Save booking logic here
-
-        return redirect()->route('dashboard')->with('success', 'Booking successful!');
-
-        
+    
+        Booking::create([
+            'user_id' => auth()->id(),
+            'space_id' => $space_id,
+            'full_name' => $request->full_name,
+            'email' => $request->email,
+            'phone_number' => $request->phone_number,
+            'booking_date' => $request->booking_date,
+            'location' => Space::find($id)->location,
+            'status' => 'pending',
+            'total_price' => Space::find($id)->price,
+        ]);
+    
+        return redirect()->route('spaces.book')->with('success', 'Booking successfully created.');
     }
+    
 
     public function mybooking()
 {

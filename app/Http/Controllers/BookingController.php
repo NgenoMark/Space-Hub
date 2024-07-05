@@ -12,9 +12,17 @@ use App\Models\Space;
 class BookingController extends Controller
 {
     // Display a listing of the bookings for a specific space
-    public function index(Space $space)
+    /*public function index(Space $space)
     {
         $bookings = $space->bookings;
+        return view('bookings.index', compact('bookings'));
+    } */
+
+    public function index()
+    {
+        $user = Auth::user();
+        $bookings = Booking::where('user_id', $user->id)->get();
+    
         return view('bookings.index', compact('bookings'));
     }
 
@@ -122,6 +130,48 @@ class BookingController extends Controller
         return redirect()->route('bookings.index', $booking->space_id)->with('status', 'Booking updated successfully!');
     }
 
+    // app/Http/Controllers/BookingController.php
+
+// app/Http/Controllers/BookingController.php
+public function showBookingForm($space_id)
+{
+
+    return "The space ID is: " . $space_id;
+
+    $space = Space::findOrFail($space_id);
+    return view('booking.form', compact('space'));
+}
+
+
+    
+    public function submitBookingForm(Request $request, $space_id)
+    {
+        // Validation
+        $request->validate([
+            'full_name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone_number' => 'required|string|max:20',
+            'booking_date' => 'required|date', // Validate booking date
+            // Add more fields and validation rules as needed
+        ]);
+
+        // Create booking
+        $booking = new Booking();
+        $booking->space_id = $space_id;
+        $booking->full_name = $request->input('full_name');
+        $booking->email = $request->input('email');
+        $booking->phone_number = $request->input('phone_number');
+        $booking->booking_date = $request->input('booking_date'); // Capture booking date
+        $booking->status = 'Pending'; // Set initial status
+
+        // Save booking
+        $booking->save();
+
+        // Redirect to bookings index page with success message
+        return redirect()->route('bookings.index')->with('success', 'Booking submitted successfully!');
+    }
+
+
     // Remove the specified booking from storage
     public function destroy(Booking $booking)
     {
@@ -149,6 +199,5 @@ class BookingController extends Controller
             return back()->withInput()->with('error', 'Failed to create booking.');
         }
     }
-
     
 }

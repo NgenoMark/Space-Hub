@@ -1,33 +1,22 @@
+<!-- resources/views/spaces/index.blade.php -->
 <x-app-layout>
-{{-- <x-slot name="header">
-    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        {{ __('Dashboard') }}
-    </h2>
-</x-slot> --}}
-
-
-<div class="flex space-x-8 mt-4 ml-4">
+    <div class="flex space-x-8 mt-4 ml-4">
         <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
             {{ __('Home Page') }}
         </x-nav-link>
-        <x-nav-link href="{{ route('spaces.index') }}" :active="request()->routeIs('spaces.index')">
+        <x-nav-link href="{{ route('spaces.index') }}" :active="request()->routeIs('spaces.index') ">
             {{ __('Spaces') }}
         </x-nav-link>
-        <x-nav-link href="{{ route('warehouses.index') }}" :active="request()->routeIs('warehouses.index')">
-            {{ __('Warehouses') }}
+        <x-nav-link href="{{ route('bookings.index') }}" :active="request()->routeIs('bookings.index') ">
+            {{ __('My Bookings') }}
         </x-nav-link>
-        <x-nav-link href="{{ route('spaces.book') }}" :active="request()->routeIs('spaces.book')">
-    {{ __('My Bookings') }}
-</x-nav-link>
-
     </div>
-
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    <form id="searchForm" method="GET" action="{{ route('search') }}">
+                    <form method="GET" action="{{ route('search') }}">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
                                 <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
@@ -53,87 +42,39 @@
             </div>
         </div>
 
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-6">
-            <div id="searchResults" class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <!-- Search results will be injected here by JavaScript -->
-            </div>
-        </div>
-
-        <div id="bookingSection" class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-6 hidden">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    <h3 class="text-lg font-medium text-gray-900 mb-4">Book a Space</h3>
-                    <form id="bookingForm" method="POST" action="{{ route('book') }}">
-                        @csrf
-                        <input type="hidden" name="platform_id" id="platform_id">
-                        <div>
-                            <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
-                            <input type="text" name="location" id="bookingLocation" class="mt-1 block w-full" readonly>
-                        </div>
-                        <div class="mt-4">
-                            <label for="date" class="block text-sm font-medium text-gray-700">Date</label>
-                            <input type="date" name="date" id="bookingDate" class="mt-1 block w-full" required>
-                        </div>
-                        <div class="mt-4">
-                            <label for="place_name" class="block text-sm font-medium text-gray-700">Name of the Place</label>
-                            <input type="text" name="place_name" id="bookingPlaceName" class="mt-1 block w-full" readonly>
-                        </div>
-                        <div class="mt-6">
-                            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">Book</button>
-                        </div>
-                    </form>
+        @isset($spaces)
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-6">
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6 bg-white border-b border-gray-200">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Capacity</th>
+                                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                                    <th scope="col" class="px-6 py-3 bg-gray-50">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                @foreach ($spaces as $space)
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $space->space_name }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $space->location }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $space->capacity }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $space->price }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <form method="GET" action="{{ route('booking.form', ['space_id' => $space->space_id]) }}">
+                                                <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-md">Select</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endisset
     </div>
-
-    <script>
-        document.getElementById('searchForm').addEventListener('submit', function (event) {
-    event.preventDefault();
-    fetchSearchResults();
-});
-
-function fetchSearchResults() {
-    const form = document.getElementById('searchForm');
-    const formData = new FormData(form);
-    const queryParams = new URLSearchParams(formData).toString();
-
-    fetch(`{{ route('search') }}?${queryParams}`, {
-        method: 'GET',
-        headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            'Content-Type': 'application/json',
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        displaySearchResults(data);
-    });
-}
-
-function displaySearchResults(results) {
-    const searchResultsDiv = document.getElementById('searchResults');
-    searchResultsDiv.innerHTML = '';
-    results.forEach(result => {
-        const resultDiv = document.createElement('div');
-        resultDiv.classList.add('p-6', 'border-b', 'border-gray-200');
-        resultDiv.innerHTML = `
-            <h3 class="text-lg font-medium text-gray-900">${result.name}</h3>
-            <p class="mt-2">${result.location}</p>
-            <p class="mt-2">Capacity: ${result.capacity}</p>
-            <p class="mt-2">Price: ${result.price}</p>
-            <button onclick="selectPlatform(${result.id}, '${result.location}', '${result.name}')" class="mt-4 px-4 py-2 bg-green-500 text-white rounded-md">Select</button>
-        `;
-        searchResultsDiv.appendChild(resultDiv);
-    });
-}
-
-function selectPlatform(id, location, name) {
-    document.getElementById('platform_id').value = id;
-    document.getElementById('bookingLocation').value = location;
-    document.getElementById('bookingPlaceName').value = name;
-    document.getElementById('bookingSection').classList.remove('hidden');
-    window.scrollTo(0, document.getElementById('bookingSection').offsetTop);
-}
-</script>
 </x-app-layout>

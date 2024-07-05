@@ -9,6 +9,8 @@ class Space extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'space_id';
+
     protected $fillable = [
         'space_name', 'space_type', 'location', 'description', 'capacity', 'price', 'provider_id'
     ];
@@ -16,8 +18,6 @@ class Space extends Model
     public function provider(){
         return $this->belongsTo(User::class, 'provider_id');
     }
-
-    protected $primaryKey = 'space_id';
 
     // Relationship with owner (user who owns the space)
     public function owner()
