@@ -2,7 +2,7 @@ Certainly! Here's the revised README file with instructions for installing prere
 
 ---
 
-# Space Hub
+# Space Hub Project 
 
 Space Hub is a web application built using the Laravel framework, designed to connect users with spaces for events. Leveraging Laravel's powerful features, Space Hub aims to provide a seamless and efficient experience for both administrators and end-users.
 

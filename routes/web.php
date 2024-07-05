@@ -36,6 +36,7 @@ Route::middleware([
         return view('hostmanager');
     })->name('hostmanager')->middleware(['hostmanager', CheckIfLocked::class]);
 
+    // Super Admin routes
     Route::get('/superadmin', [SuperAdminController::class, 'index'])
         ->name('superadmin')
         ->middleware(['superadmin', CheckIfLocked::class]);
