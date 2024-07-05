@@ -11,6 +11,7 @@ use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\AdminSpaceController;
 use App\Http\Controllers\AdminBookingController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\SpaceOwnerController;
 use App\Http\Middleware\AuthGates;
 use App\Http\Middleware\CheckIfLocked;
 
@@ -63,6 +64,9 @@ Route::middleware([
         Route::post('/admin/bookings/update-status/{booking}', [AdminBookingController::class, 'updateStatus'])->name('admin.bookings.updateStatus');
         Route::get('/admin/bookings/{id}/edit', [AdminBookingController::class, 'edit'])->name('admin.bookings.edit');
         Route::put('/admin/bookings/{id}', [AdminBookingController::class, 'update'])->name('admin.bookings.update');
+        Route::get('/spaces/chart', [SpaceOwnerController::class, 'showChart'])->name('spaces.chart');
+        Route::get('/space-owner/chart-data', [SpaceOwnerController::class, 'getChartData'])->name('spaceowner.chartdata');
+
     });
 
     Route::get('/admin/bookings', [AdminBookingController::class, 'index'])->name('admin.bookings.index');

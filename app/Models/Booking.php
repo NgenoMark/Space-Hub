@@ -12,6 +12,8 @@ class Booking extends Model
     protected $primaryKey = 'booking_id'; // Specify the primary key
 
     protected $fillable = [
+        'space_id',
+        'space_name',
         'user_id',
         'space_id',
         'full_name',
@@ -23,13 +25,21 @@ class Booking extends Model
         'total_price',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    // Relationship with client (user who booked the space)
+    public function client()
+    {
+        return $this->belongsTo(User::class, 'client_id');
+    }
+
+    // Relationship with space (space that was booked)
     public function space()
     {
         return $this->belongsTo(Space::class);
     }
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 }

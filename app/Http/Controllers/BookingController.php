@@ -47,6 +47,7 @@ class BookingController extends Controller
         // Create a new booking instance
         $booking = new Booking();
         $booking->space_id = $validatedData['space_id'];
+        $booking->space_name = $validatedData['space_name'];
         $booking->full_name = $validatedData['full_name'];
         $booking->phone_number = $validatedData['phone_number'];
         $booking->email = $validatedData['email'];
@@ -212,5 +213,3 @@ public function showBookingForm($space_id)
     
     
 }
-
-
