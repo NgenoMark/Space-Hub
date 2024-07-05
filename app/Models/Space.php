@@ -15,11 +15,27 @@ class Space extends Model
         'space_name', 'space_type', 'location', 'description', 'capacity', 'price', 'provider_id'
     ];
 
-    /**
-     * Get the provider that owns the space.
-     */
-    public function provider()
+    public function provider(){
+        return $this->belongsTo(User::class, 'provider_id');
+    }
+
+    // Relationship with owner (user who owns the space)
+    public function owner()
     {
         return $this->belongsTo(User::class, 'provider_id');
     }
+
+    // Relationship with bookings (one-to-many)
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+
+        // Space model
+    public function update(array $attributes = [], array $options = [])
+    {
+        // Implement your update logic here
+        return parent::update($attributes, $options);
+    }
+
 }

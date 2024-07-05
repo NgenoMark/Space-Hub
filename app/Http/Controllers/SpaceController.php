@@ -79,30 +79,55 @@ public function edit($space_id)
     } */
 
     // Update the specified space in storage
+    // SpaceController update method
     public function update(Request $request, Space $space)
     {
+        // Validate the update request
         $request->validate([
             'name' => 'required|string|max:255',
-            'location' => 'required|string|max:255',
+            'space_type' => 'required|string',
+            'location' => 'required|string',
             'capacity' => 'required|integer',
+            'description' => 'nullable|string',
             'price' => 'required|numeric',
+            // Add more fields as needed
         ]);
 
+        // Update the space using the corrected method signature
         $space->update([
-            'name' => $request->input('name'),
-            'location' => $request->input('location'),
-            'capacity' => $request->input('capacity'),
-            'price' => $request->input('price'),
+            'name' => $request->name,
+            'space_type' => $request->space_type,
+            'location' => $request->location,
+            'capacity' => $request->capacity,
+            'description' => $request->description,
+            'price' => $request->price,
+            // Update other fields as needed
         ]);
 
-        return redirect()->route('spaces.index')->with('status', 'Space updated successfully!');
+        // Update related bookings if necessary
+        $space->bookings()->update([
+            'space_name' => $space->name,
+            'space_type' => $space->space_type,
+            'location' => $space->location,
+            // Update other related fields as needed
+        ]);
+
+        return redirect()->route('spaces.show', $space->id)->with('success', 'Space updated successfully!');
     }
+
 
     // Remove the specified space from storage
     public function destroy(Space $space)
     {
+        // Ensure the authenticated user is the owner of the space
+        if (Auth::id() !== $space->provider_id) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Delete the space
         $space->delete();
-        return redirect()->route('spaces.index')->with('status', 'Space deleted successfully!');
+
+        return redirect()->route('dashboard')->with('success', 'Space deleted successfully!');
     }
 
     // Search for spaces based on criteria

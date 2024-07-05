@@ -17,6 +17,7 @@ class CreateBookingsTable extends Migration
             $table->string('status', 20);
             $table->decimal('total_price', 10, 2);
             $table->timestamps();
+            $table->string('space_name')->nullable()->after('space_name');
         });
     }
 
