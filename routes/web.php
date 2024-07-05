@@ -4,8 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LockScreenController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\UserController;
-use App\Http\Middleware\AuthGates;
-use App\Http\Middleware\CheckIfLocked;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\SpaceController;
@@ -13,6 +11,8 @@ use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\AdminSpaceController;
 use App\Http\Controllers\AdminBookingController;
 use App\Http\Controllers\TaskController;
+use App\Http\Middleware\AuthGates;
+use App\Http\Middleware\CheckIfLocked;
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,6 +23,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard')->middleware(['client', CheckIfLocked::class]);
@@ -42,10 +43,9 @@ Route::middleware([
     // Lock screen routes
     Route::get('/lock', [LockScreenController::class, 'show'])->name('lock');
     Route::post('/unlock', [LockScreenController::class, 'unlock'])->name('unlock');
-    
+
     // User routes
-    Route::resource('users', UserController::class)
-        ->middleware([CheckIfLocked::class, AuthGates::class]);
+    Route::resource('users', UserController::class)->middleware([CheckIfLocked::class, AuthGates::class]);
     Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
@@ -57,112 +57,36 @@ Route::middleware([
         Route::get('/admin/spaces', [AdminSpaceController::class, 'index'])->name('admin.spaces.index');
         Route::get('/admin/spaces/edit/{id}', [AdminSpaceController::class, 'edit'])->name('admin.spaces.edit');
         Route::post('/admin/spaces/store', [AdminSpaceController::class, 'store'])->name('admin.spaces.store');
-        //Route::get('/admin/spaces', [SpaceController::class, 'index'])->name('admin.spaces.index');
-
-
-        Route::get('/admin/spaces/my-spaces', [SpaceController::class, 'mySpaces'])->name('admin.spaces.my-spaces');
-        //Route::get('/admin/spaces/edit/{space_id}', [SpaceController::class, 'edit'])->name('admin.spaces.edit');
-
-
-
+        Route::put('/admin/spaces/{id}', [AdminSpaceController::class, 'update'])->name('admin.spaces.update');
+        Route::delete('/admin/spaces/{id}', [AdminSpaceController::class, 'destroy'])->name('admin.spaces.destroy');
+        Route::post('/admin/bookings/update-status/{booking}', [AdminBookingController::class, 'updateStatus'])->name('admin.bookings.updateStatus');
+        Route::get('/admin/bookings/{id}/edit', [AdminBookingController::class, 'edit'])->name('admin.bookings.edit');
+        Route::put('/admin/bookings/{id}', [AdminBookingController::class, 'update'])->name('admin.bookings.update');
     });
 
+    // Booking routes
+    Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
     Route::get('/bookings/{space_id}/form', [BookingController::class, 'showBookingForm'])->name('booking.form');
-Route::post('/bookings/{space_id}/submit', [BookingController::class, 'submitBookingForm'])->name('booking.submit');
-Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
+    Route::post('/bookings/{space_id}/submit', [BookingController::class, 'submitBookingForm'])->name('booking.submit');
+    Route::post('/book', [BookingController::class, 'book'])->name('book');
 
-// routes/web.php
-
-
-
-Route::get('/book/{id}', [BookingController::class, 'showBookingForm'])->name('booking.form');
-Route::post('/book', [BookingController::class, 'book'])->name('book');
-
-Route::get('/book/{id}', [BookingController::class, 'showBookingForm'])->name('book.form');
-Route::post('/book', [BookingController::class, 'book'])->name('book');
     // Space routes
     Route::resource('spaces', SpaceController::class)->except(['show']);
     Route::get('spaces/{space}/bookings', [BookingController::class, 'index'])->name('spaces.bookings');
     Route::get('/spaces/search', [SpaceController::class, 'search'])->name('spaces.search');
     Route::get('/spaces/{space}/book', [SpaceController::class, 'showBookingForm'])->name('spaces.book');
     Route::post('/spaces/{space}/book', [SpaceController::class, 'book'])->name('spaces.book.submit');
-    //Route::get('/spaces/book', [SpaceController::class, 'mybooking'])->name('spaces.book');
-    //Route::get('/spaces/{id}/book', [SpaceController::class, 'showBookingForm'])->name('spaces.book.form');
-    //Route::post('/spaces/{id}/book', [SpaceController::class, 'book'])->name('spaces.book');
     Route::get('/spaces/booking-form', [SpaceController::class, 'showBookingForm'])->name('spaces.book');
     Route::get('/spaces/book', [SpaceController::class, 'book'])->name('spaces.book');
-    // routes/web.php
-Route::get('/my-bookings', [BookingController::class, 'index'])->name('bookings.index');
-// routes/web.php
-Route::get('/booking/form/{space_id}', [BookingController::class, 'showBookingForm'])->name('booking.form');
-
-
-Route::get('/bookings/{space_id}/form', [BookingController::class, 'showBookingForm'])->name('booking.form');
-Route::post('/bookings/{space_id}/submit', [BookingController::class, 'submitBookingForm'])->name('booking.submit');
-
-    Route::post('/admin/bookings/update-status/{booking}', [AdminBookingController::class, 'updateStatus'])->name('admin.bookings.updateStatus');
-
-
-    Route::get('/admin/bookings/{id}/edit', [AdminBookingController::class, 'edit'])->name('admin.bookings.edit');
-Route::put('/admin/bookings/{id}', [AdminBookingController::class, 'update'])->name('admin.bookings.update');
-
-
-
-
-    Route::get('/spaces/booking-form', [SpaceController::class, 'showBookingForm'])->name('spaces.book');
-    Route::get('/spaces', [SpaceController::class, 'index'])->name('spaces.index');
-
-
-    Route::get('/admin/spaces/{id}/edit', [AdminSpaceController::class, 'edit'])->name('admin.spaces.edit');
-Route::put('/admin/spaces/{id}', [AdminSpaceController::class, 'update'])->name('admin.spaces.update');
-Route::delete('/admin/spaces/{id}', [AdminSpaceController::class, 'destroy'])->name('admin.spaces.destroy');
-
-
-
-
-
-// Delete route
-Route::delete('admin/spaces/{id}', [AdminSpaceController::class, 'destroy'])->name('admin.spaces.destroy');
-
-
-    // routes/web.php
-
-Route::get('/booking-form', [BookingController::class, 'showBookingForm'])->name('booking.form');
-
-
-    // Route for handling the booking form submission
-    //Route::post('/spaces/{id}/book', [BookingController::class, 'store'])->name('spaces.book.store');
 
     // Warehouse routes
     Route::get('/warehouses', [WarehouseController::class, 'index'])->name('warehouses.index');
 
-    // Booking routes
-    Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
-    Route::post('/book', [BookingController::class, 'book'])->name('book');
-    Route::resource('spaces.bookings', BookingController::class);
-    //Route::get('/bookings', [BookingController::class, 'uindex'])->name('bookings.uindex');
-
-
     // Task routes
     Route::resource('tasks', TaskController::class)->middleware(CheckIfLocked::class);
 
-    Route::middleware(['auth'])->group(function () {
-        Route::get('/admin/bookings', [BookingController::class, 'list'])->name('admin.bookings.list');
-        Route::post('/admin/bookings/{id}/update-status', [BookingController::class, 'updateStatus'])->name('admin.bookings.updateStatus');
-
-    });
-
     // Search routes
     Route::get('/search', [SearchController::class, 'search'])->name('search');
-
-    // routes/web.php
-
-Route::get('/search', [SpaceController::class, 'search'])->name('search');
-
-
-Route::post('/book', [BookingController::class, 'store'])->name('book');
-Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
-
 });
 
 ?>
