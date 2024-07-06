@@ -35,30 +35,36 @@ class BookingController extends Controller
     // Store a newly created booking in storage
     public function store(Request $request)
     {
-        // Validate incoming request
-        $validatedData = $request->validate([
+        // Validate the form data
+        $request->validate([
+            'full_name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone_number' => 'required|string|max:15',
+            'booking_date' => 'required|date',
             'space_id' => 'required|exists:spaces,id',
-            'full_name' => 'required|string',
-            'phone_number' => 'required|string',
-            'email' => 'required|email',
-            'date' => 'required|date',
         ]);
-    
-        // Create a new booking instance
+
+        // Retrieve the space and its provider_id
+        $space = Space::findOrFail($request->space_id);
+
+        // Create a new booking
         $booking = new Booking();
-        $booking->space_id = $validatedData['space_id'];
-        $booking->space_name = $validatedData['space_name'];
-        $booking->full_name = $validatedData['full_name'];
-        $booking->phone_number = $validatedData['phone_number'];
-        $booking->email = $validatedData['email'];
-        $booking->booking_date = $validatedData['date'];
-        $booking->status = 'Pending'; // Set status to Pending for new bookings
-        
-        // Save the booking
+        $booking->full_name = $request->full_name;
+        $booking->email = $request->email;
+        $booking->phone_number = $request->phone_number;
+        $booking->booking_date = $request->booking_date;
+        $booking->space_id = $space->id;
+        $booking->provider_id = $space->provider_id;
+        $booking->space_name = $space->space_name;
+        $booking->location = $space->location;
+        $booking->status = 'Pending';
+        $booking->total_price = $space->price; // Automatically insert the space price
+
+        // Save the booking to the database
         $booking->save();
-    
-        // Optionally, you can redirect the user after successful booking
-        return redirect()->route('bookings.index')->with('success', 'Booking created successfully!');
+
+        // Redirect back with a success message
+        return redirect()->back()->with('success', 'Booking submitted successfully!');
     }
     
 
