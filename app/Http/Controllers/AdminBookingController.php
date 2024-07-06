@@ -10,10 +10,13 @@ class AdminBookingController extends Controller
 {
     public function index()
     {
-        // Logic to fetch and return bookings data
-        $bookings = Booking::all(); // Example query, adjust as per your logic
+        // Fetch bookings for the authenticated user
+        $bookings = Booking::where('user_id', auth()->id())->get();
+        //$bookings = Booking::where('provider_id', auth()->id())->get();
 
-        return view('admin.bookings.index'); // Adjust this according to your view structure
+
+        // Return the view with bookings data
+        return view('admin.bookings.index', compact('bookings'));
     }
 
     public function edit($id)

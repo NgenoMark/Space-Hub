@@ -1,5 +1,3 @@
-<!-- resources/views/admin/bookings/index.blade.php -->
-
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight ml-4">
@@ -12,7 +10,7 @@
             <x-nav-link href="{{ route('admin.spaces.index') }}" :active="request()->routeIs('admin.spaces.index')">
                 {{ __('My Space') }}
             </x-nav-link>
-            <x-nav-link href="{{ route('admin.bookings.index') }}" :active="request()->routeIs('admin.bookings.index')">
+            <x-nav-link href="{{ route('admin.bookings.list') }}" :active="request()->routeIs('admin.bookings.list')">
                 {{ __('Bookings') }}
             </x-nav-link>
             <x-nav-link href="{{ route('admin.spaces.create') }}" :active="request()->routeIs('admin.spaces.create')">
@@ -31,34 +29,26 @@
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead>
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Space Name</th>
-                                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Booked By</th>
-                                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Booking Date</th>
-                                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Full Name</th>
+                                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone Number</th>
+                                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Booking Date</th>
+                                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @foreach ($bookings as $booking)
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $booking->id }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $booking->space->space_name }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $booking->full_name }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $booking->full_name }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $booking->email }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $booking->phone_number }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $booking->booking_date }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        <form class="update-status-form">
-                                            @csrf
-                                            <input type="hidden" name="booking_id" value="{{ $booking->id }}">
-                                            <select name="status" class="status-dropdown" data-id="{{ $booking->id }}">
-                                                <option value="Pending" {{ $booking->status == 'Pending' ? 'selected' : '' }}>Pending</option>
-                                                <option value="Confirmed" {{ $booking->status == 'Confirmed' ? 'selected' : '' }}>Confirmed</option>
-                                                <option value="Cancelled" {{ $booking->status == 'Cancelled' ? 'selected' : '' }}>Cancelled</option>
-                                            </select>
-                                        </form>
-                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $booking->status }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $booking->total_price }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <button class="update-status-button px-4 py-2 bg-green-500 text-white rounded-md">Update Status</button>
+                                        <a href="{{ route('admin.bookings.edit', $booking->booking_id) }}" class="px-4 py-2 bg-blue-500 text-white rounded-md">Update</a>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -69,40 +59,4 @@
             </div>
         </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('.update-status-button').forEach(button => {
-                button.addEventListener('click', function () {
-                    const form = this.closest('tr').querySelector('.update-status-form');
-                    const statusDropdown = form.querySelector('.status-dropdown');
-                    const status = statusDropdown.value;
-                    const bookingId = statusDropdown.dataset.id;
-
-                    fetch("{{ route('admin.bookings.updateStatus', ['booking' => ':booking']) }}".replace(':booking', bookingId), {
-                        method: 'POST',
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ status: status })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert('Status updated successfully');
-                            // Optionally, update the status shown in the table without reloading the page
-                        } else {
-                            alert('Error updating status');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('Error updating status');
-                    });
-                });
-            });
-        });
-    </script>
 </x-app-layout>
