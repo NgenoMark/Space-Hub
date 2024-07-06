@@ -35,13 +35,16 @@ class BookingController extends Controller
     // Store a newly created booking in storage
     public function store(Request $request)
     {
+
+        $user_id = Auth::id();
+
         // Validate the form data
         $request->validate([
             'full_name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone_number' => 'required|string|max:15',
             'booking_date' => 'required|date',
-            'space_id' => 'required|exists:spaces,id',
+            'space_id' => 'required|exists:spaces,space_id',
         ]);
 
         // Retrieve the space and its provider_id
@@ -53,8 +56,9 @@ class BookingController extends Controller
         $booking->email = $request->email;
         $booking->phone_number = $request->phone_number;
         $booking->booking_date = $request->booking_date;
-        $booking->space_id = $space->id;
+        $booking->space_id = $space->space_id;
         $booking->provider_id = $space->provider_id;
+        $booking->user_id = Auth::id();
         $booking->space_name = $space->space_name;
         $booking->location = $space->location;
         $booking->status = 'Pending';
@@ -64,7 +68,7 @@ class BookingController extends Controller
         $booking->save();
 
         // Redirect back with a success message
-        return redirect()->back()->with('success', 'Booking submitted successfully!');
+        return redirect()->route('bookings.index')->with('success', 'Booking submitted successfully!');
     }
     
 

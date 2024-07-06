@@ -11,8 +11,8 @@ class AdminBookingController extends Controller
     public function index()
     {
         // Fetch bookings for the authenticated user
-        $bookings = Booking::where('user_id', auth()->id())->get();
-        //$bookings = Booking::where('provider_id', auth()->id())->get();
+        //$bookings = Booking::where('user_id', auth()->id())->get();
+        $bookings = Booking::where('provider_id', auth()->id())->get();
 
 
         // Return the view with bookings data

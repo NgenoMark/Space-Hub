@@ -12,7 +12,8 @@ class CreateBookingsTable extends Migration
             $table->id('booking_id');
             $table->foreignId('provider_id')->constrained('spaces', 'provider_id');
             $table->foreignId('space_id')->constrained('spaces', 'space_id');
-            $table->foreignId('space_name')->constrained('spaces', 'space_name');
+            $table->foreignId('user_id')->constrained('users', 'id');
+            $table->string('space_name', 50);
             $table->string('full_name', 50);
             $table->string('email', 50);
             $table->string('phone_number', 20);

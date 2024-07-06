@@ -91,6 +91,16 @@ Route::middleware([
     Route::get('/spaces/book', [SpaceController::class, 'book'])->name('spaces.book');
     Route::post('/booking/store', [BookingController::class, 'store'])->name('booking.store');
     Route::post('/bookings', [BookingController::class, 'store'])->name('booking.store');
+    Route::post('/submit-booking/{space_id}', [BookingController::class, 'store'])->name('booking.submit');
+    
+
+    Route::middleware(['web'])->group(function () {
+        Route::post('/submit-booking/{space_id}', [BookingController::class, 'store'])->name('booking.submit');
+    });
+
+
+    
+
     // routes/web.php
 Route::post('/booking/store', [BookingController::class, 'store'])->name('booking.store');
 Route::get('/booking/form/{space_id}', [BookingController::class, 'showBookingForm'])->name('booking.form');
@@ -106,6 +116,10 @@ Route::get('/booking/form/{space_id}', [BookingController::class, 'showBookingFo
 
     // Search routes
     Route::get('/search', [SearchController::class, 'search'])->name('search');
+
+    
 });
+
+
 
 ?>
