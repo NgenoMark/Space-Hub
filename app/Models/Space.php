@@ -25,13 +25,13 @@ class Space extends Model
         return $this->belongsTo(User::class, 'provider_id');
     }
 
-    // Relationship with bookings (one-to-many)
+    // Space model
+    
     public function bookings()
     {
-        return $this->hasMany(Booking::class);
+        return $this->hasMany(Booking::class, 'space_id');
     }
 
-        // Space model
     public function update(array $attributes = [], array $options = [])
     {
         // Implement your update logic here
