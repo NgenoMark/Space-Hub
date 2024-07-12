@@ -23,6 +23,8 @@
                             <option value="Pending" {{ $booking->status == 'Pending' ? 'selected' : '' }}>Pending</option>
                             <option value="Accepted" {{ $booking->status == 'Accepted' ? 'selected' : '' }}>Accepted</option>
                             <option value="Denied" {{ $booking->status == 'Denied' ? 'selected' : '' }}>Denied</option>
+                            <option value="Cancelled" {{ $booking->status == 'Cancelled' ? 'selected' : '' }}>Cancelled</option>
+
                         </select>
                     </div>
 

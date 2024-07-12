@@ -51,7 +51,9 @@
                                     <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Status
                                     </th>
-                                    <!-- Add more headers as per your booking details -->
+                                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Action
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
@@ -76,11 +78,18 @@
                                             @if($booking->status === 'Accepted') rounded-lg @else rounded-md @endif
                                             @if($booking->status === 'Accepted') bg-green-200
                                             @elseif($booking->status === 'Denied') bg-red-200
-                                            @else bg-yellow-200
+                                            @elseif($booking->status === 'Pending') bg-yellow-200
+                                            @else bg-gray-200
                                             @endif">
                                             {{ $booking->status }}
                                         </td>
-                                        <!-- Add more columns as per your booking details -->
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                            <form id="cancel-booking-{{ $booking->booking_id }}" action="{{ route('bookings.cancel', $booking->booking_id) }}" method="POST" style="display: none;">
+                                                @csrf
+                                                @method('PATCH')
+                                            </form>
+                                            <button onclick="confirmCancellation({{ $booking->booking_id }})" class="px-4 py-2 bg-red-500 text-white rounded-md">Cancel</button>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -90,4 +99,12 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function confirmCancellation(bookingId) {
+            if (confirm("Are you sure you want to cancel this booking?")) {
+                document.getElementById('cancel-booking-' + bookingId).submit();
+            }
+        }
+    </script>
 </x-app-layout>
