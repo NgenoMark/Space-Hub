@@ -32,6 +32,23 @@ class BookingController extends Controller
         return view('bookings.create', compact('space'));
     }
 
+    public function cancel(Request $request, $booking_id)
+{
+    $booking = Booking::findOrFail($booking_id);
+
+    // Ensure the logged-in user owns the booking
+    if ($booking->user_id !== auth()->id()) {
+        return redirect()->route('bookings.index')->with('error', 'Unauthorized access.');
+    }
+
+    // Update the status to 'Cancelled'
+    $booking->status = 'Cancelled';
+    $booking->save();
+
+    return redirect()->route('bookings.index')->with('success', 'Booking cancelled successfully.');
+}
+
+
     // Store a newly created booking in storage
     public function store(Request $request)
     {
@@ -102,7 +119,7 @@ class BookingController extends Controller
     public function updateStatus(Request $request, $id)
     {
         $request->validate([
-            'status' => 'required|string|in:pending,accepted,denied',
+            'status' => 'required|string|in:pending,accepted,denied,cancelled',
         ]);
     
         \Log::info('Request to update status for booking ID: ' . $id);

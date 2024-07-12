@@ -55,30 +55,36 @@ class AdminSpaceController extends Controller
 
     public function store(Request $request)
     {
-        // Validate the form data
         $request->validate([
             'space_name' => 'required|string|max:255',
             'space_type' => 'required|string|max:255',
-            'location' => 'required|string|max:50',
-            'description' => 'required|string',
-            'capacity' => 'required|numeric',
+            'location' => 'required|string|max:255',
+            'capacity' => 'required|integer',
+            'description' => 'nullable|string',
             'price' => 'required|numeric',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-    
-        // Create a new Space instance and save to database
-        $space = new Space();
-        $space->space_name = $request->input('space_name');
-        $space->space_type = $request->input('space_type');
-        $space->location = $request->input('location');
-        $space->description = $request->input('description');
-        $space->price = $request->input('price');
-        $space->capacity = $request->input('capacity');
-        $space->provider_id = Auth::id(); // Set provider_id to the authenticated user's ID
-        $space->save();
-    
-        // Redirect to the edit route with the newly created space ID
-        //return redirect()->route('admin.spaces.edit', ['id' => $space->id])->with('success', 'Space created successfully!');
-        return redirect()->route('admin.spaces.index');
 
-    }    
+        $images = [];
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('spaces', 'public');
+                $images[] = $path;
+            }
+        }
+
+        Space::create([
+            'space_name' => $request->space_name,
+            'space_type' => $request->space_type,
+            'location' => $request->location,
+            'capacity' => $request->capacity,
+            'description' => $request->description,
+            'price' => $request->price,
+            'provider_id' => Auth::id(),
+            'images' => $images,
+        ]);
+
+        return redirect()->route('admin.spaces.index')->with('success', 'Space created successfully.');
+    }
+    
 }
