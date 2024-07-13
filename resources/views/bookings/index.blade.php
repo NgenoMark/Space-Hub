@@ -46,7 +46,10 @@
                                         Phone Number
                                     </th>
                                     <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Booking Date
+                                        Start Date
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        End Date
                                     </th>
                                     <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Status
@@ -72,7 +75,10 @@
                                             {{ $booking->phone_number }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                            {{ $booking->booking_date }}
+                                            {{ $booking->start_date }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                            {{ $booking->end_date }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900
                                             @if($booking->status === 'Accepted') rounded-lg @else rounded-md @endif

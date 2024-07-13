@@ -1,5 +1,3 @@
-<!-- resources/views/your_booking_form.blade.php -->
-
 <x-app-layout>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -11,7 +9,7 @@
                         @csrf
                         <input type="hidden" name="space_id" value="{{ $space->space_id }}">
                         <input type="hidden" name="space_name" value="{{ $space->space_name }}">
-                        <input type="hidden" name="provider_id" value="{{ $space->provider_id }}"> {{-- Assuming this data is available --}}
+                        <input type="hidden" name="provider_id" value="{{ $space->provider_id }}"> {{-- Ensure this is included --}}
                         
                         <div class="mb-4">
                             <label for="place_name" class="block text-sm font-medium text-gray-700">Name of the Place</label>
@@ -39,8 +37,13 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="booking_date" class="block text-sm font-medium text-gray-700">Booking Date</label>
-                            <input type="date" name="booking_date" id="booking_date" class="mt-1 block w-full" min="{{ date('Y-m-d') }}" required>
+                            <label for="start_date" class="block text-sm font-medium text-gray-700">Start Date</label>
+                            <input type="date" name="start_date" id="start_date" class="mt-1 block w-full" min="{{ date('Y-m-d') }}" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="end_date" class="block text-sm font-medium text-gray-700">End Date</label>
+                            <input type="date" name="end_date" id="end_date" class="mt-1 block w-full" min="{{ date('Y-m-d') }}" required>
                         </div>
 
                         <div class="mt-6">
