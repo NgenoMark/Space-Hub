@@ -17,7 +17,8 @@ class CreateBookingsTable extends Migration
             $table->string('full_name', 50);
             $table->string('email', 50);
             $table->string('phone_number', 20);
-            $table->date('booking_date');
+            $table->date('start_date'); // New start_date column
+            $table->date('end_date'); // New end_date column
             $table->string('location', 50);
             $table->string('status', 20);
             $table->decimal('total_price', 10, 2);
