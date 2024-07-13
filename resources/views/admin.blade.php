@@ -4,7 +4,7 @@
             {{ __('Home Page') }}
         </h2>
         <div class="flex space-x-8 mt-4 ml-4">
-            <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+            <x-nav-link href="{{ route('admin') }}" :active="request()->routeIs('admin')">
                 {{ __('Home Page') }}
             </x-nav-link>
             <x-nav-link href="{{ route('admin.spaces.index') }}" :active="request()->routeIs('admin.spaces.index')">
