@@ -13,8 +13,12 @@
 
                 <div class="p-6 bg-white border-b border-gray-200">
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700" for="booking_date">Booking Date</label>
-                        <input type="date" name="booking_date" id="booking_date" value="{{ $booking->booking_date }}" required class="mt-1 block w-full">
+                        <label class="block text-sm font-medium text-gray-700" for="booking_date">Start Date</label>
+                        <input type="date" name="booking_date" id="booking_date" value="{{ $booking->start_date }}" required class="mt-1 block w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700" for="booking_date">End Date</label>
+                        <input type="date" name="booking_date" id="booking_date" value="{{ $booking->end_date }}" required class="mt-1 block w-full">
                     </div>
 
                     <div class="mb-4">

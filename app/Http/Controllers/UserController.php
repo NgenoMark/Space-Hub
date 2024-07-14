@@ -5,9 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Validation\Rule;
+use App\Models\Space;
+
 
 class UserController extends Controller
 {
+
+
+    /* public function index1()
+    {
+        $spaces = Space::all(); // Retrieve all spaces or based on the logged-in user
+        return view('dashboard', compact('spaces'));
+    }*/
 
     public function search(Request $request)
     {
