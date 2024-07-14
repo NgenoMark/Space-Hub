@@ -46,8 +46,8 @@
                                     <td class="px-2 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $booking->full_name }}</td>
                                     <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-500">{{ $booking->email }}</td>
                                     <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-500">{{ $booking->phone_number }}</td>
-                                    <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-500">{{ $booking->start_date }}</td>
-                                    <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-500">{{ $booking->end_date }}</td>
+                                    <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-500">{{ $booking->start_date->format('Y-m-d') }}</td>
+                                    <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-500">{{ $booking->end_date->format('Y-m-d') }}</td>
                                     <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-500">{{ $booking->space_name }}</td>
                                     <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-500">{{ $booking->status }}</td>
                                     <td class="px-2 py-4 whitespace-nowrap text-sm text-gray-500">{{ $booking->total_price }}</td>

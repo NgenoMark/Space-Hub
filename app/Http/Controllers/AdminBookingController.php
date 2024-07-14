@@ -29,7 +29,8 @@ class AdminBookingController extends Controller
 public function update(Request $request, $id)
 {
     $request->validate([
-        'booking_date' => 'required|date',
+        'start_date' => 'required|date',
+        'end_date' => 'required|date',
         'status' => 'required|string',
         'total_price' => 'required|numeric',
         'full_name' => 'required|string|max:100',
