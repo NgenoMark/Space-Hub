@@ -75,19 +75,20 @@
                                             {{ $booking->phone_number }}
                                         </td>
                                         <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
-                                            {{ $booking->start_date }}
+                                        {{ \Carbon\Carbon::parse($booking->start_date)->format('Y-m-d') }}
                                         </td>
                                         <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
-                                            {{ $booking->end_date }}
+                                        {{ \Carbon\Carbon::parse($booking->end_date)->format('Y-m-d') }}
                                         </td>
-                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900
-                                            @if($booking->status === 'Accepted') rounded-lg @else rounded-md @endif
-                                            @if($booking->status === 'Accepted') bg-green-200
-                                            @elseif($booking->status === 'Denied') bg-red-200
-                                            @elseif($booking->status === 'Pending') bg-yellow-200
-                                            @else bg-gray-200
-                                            @endif">
-                                            {{ $booking->status }}
+                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                            <span class="px-2 py-1 rounded-md text-white
+                                                @if($booking->status === 'Accepted') bg-green-500
+                                                @elseif($booking->status === 'Denied') bg-red-500
+                                                @elseif($booking->status === 'pending') bg-yellow-500
+                                                @else bg-gray-500
+                                                @endif">
+                                                {{ $booking->status }}
+                                            </span>
                                         </td>
                                         <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
                                             <form id="cancel-booking-{{ $booking->booking_id }}" action="{{ route('bookings.cancel', $booking->booking_id) }}" method="POST" style="display: none;">
