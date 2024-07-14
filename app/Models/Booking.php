@@ -18,10 +18,16 @@ class Booking extends Model
         'full_name',
         'email',
         'phone_number',
-        'booking_date',
+        'start_date',
+        'end_date',
         'location',
         'status',
         'total_price',
+    ];
+
+    protected $casts = [
+        'start_date' => 'date',
+        'end_date' => 'date',
     ];
 
     public function user()

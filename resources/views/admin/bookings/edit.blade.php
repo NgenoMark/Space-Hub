@@ -13,8 +13,12 @@
 
                 <div class="p-6 bg-white border-b border-gray-200">
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700" for="booking_date">Booking Date</label>
-                        <input type="date" name="booking_date" id="booking_date" value="{{ $booking->booking_date }}" required class="mt-1 block w-full">
+                        <label class="block text-sm font-medium text-gray-700" for="start_date">Start Date</label>
+                        <input type="date" name="start_date" id="start_date" value="{{ \Carbon\Carbon::parse($booking->start_date)->format('Y-m-d') }}" required class="mt-1 block w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700" for="end_date">End Date</label>
+                        <input type="date" name="end_date" id="end_date" value="{{ \Carbon\Carbon::parse($booking->end_date)->format('Y-m-d') }}" required class="mt-1 block w-full">
                     </div>
 
                     <div class="mb-4">
@@ -23,27 +27,28 @@
                             <option value="Pending" {{ $booking->status == 'Pending' ? 'selected' : '' }}>Pending</option>
                             <option value="Accepted" {{ $booking->status == 'Accepted' ? 'selected' : '' }}>Accepted</option>
                             <option value="Denied" {{ $booking->status == 'Denied' ? 'selected' : '' }}>Denied</option>
+                            <option value="Cancelled" {{ $booking->status == 'Cancelled' ? 'selected' : '' }}>Cancelled</option>
                         </select>
                     </div>
 
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700" for="total_price">Total Price</label>
-                        <input type="text" name="total_price" id="total_price" value="{{ $booking->total_price }}" required class="mt-1 block w-full">
+                        <input type="text" name="total_price" id="total_price" value="{{ $booking->total_price }}" required class="mt-1 block w-full" readonly>
                     </div>
 
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700" for="full_name">Full Name</label>
-                        <input type="text" name="full_name" id="full_name" value="{{ $booking->full_name }}" required class="mt-1 block w-full">
+                        <input type="text" name="full_name" id="full_name" value="{{ $booking->full_name }}" required class="mt-1 block w-full" readonly>
                     </div>
 
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700" for="email">Email</label>
-                        <input type="email" name="email" id="email" value="{{ $booking->email }}" required class="mt-1 block w-full">
+                        <input type="email" name="email" id="email" value="{{ $booking->email }}" required class="mt-1 block w-full" readonly>
                     </div>
 
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700" for="phone_number">Phone Number</label>
-                        <input type="text" name="phone_number" id="phone_number" value="{{ $booking->phone_number }}" required class="mt-1 block w-full">
+                        <input type="text" name="phone_number" id="phone_number" value="{{ $booking->phone_number }}" required class="mt-1 block w-full" readonly>
                     </div>
 
                     <div class="flex items-center justify-end mt-4">

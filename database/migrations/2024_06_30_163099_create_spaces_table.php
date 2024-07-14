@@ -18,6 +18,7 @@ class CreateSpacesTable extends Migration
             $table->decimal('price', 10, 2);
             $table->foreignId('deal_id')->nullable()->constrained('deals','deal_id');
             $table->foreignId('provider_id')->constrained('users','id');
+            $table->json('images')->nullable(); // Add this line to store images
             $table->timestamps();
         });
     }

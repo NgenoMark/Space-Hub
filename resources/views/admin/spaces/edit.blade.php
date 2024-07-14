@@ -62,7 +62,7 @@
                     <form method="POST" action="{{ route('admin.spaces.destroy', $space->space_id) }}" class="mt-4">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-md">Delete Space</button>
+                        <!--<button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-md">Delete Space</button> -->
                     </form>
                 </div>
             </div>

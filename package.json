@@ -16,6 +16,8 @@
         "vite": "^5.0"
     },
     "dependencies": {
-        "chart.js": "^4.4.3"
+        "chart.js": "^4.4.3",
+        "chartjs-adapter-date-fns": "^3.0.0",
+        "date-fns": "^3.6.0"
     }
 }

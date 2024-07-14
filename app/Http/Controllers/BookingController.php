@@ -32,6 +32,23 @@ class BookingController extends Controller
         return view('bookings.create', compact('space'));
     }
 
+    public function cancel(Request $request, $booking_id)
+{
+    $booking = Booking::findOrFail($booking_id);
+
+    // Ensure the logged-in user owns the booking
+    if ($booking->user_id !== auth()->id()) {
+        return redirect()->route('bookings.index')->with('error', 'Unauthorized access.');
+    }
+
+    // Update the status to 'Cancelled'
+    $booking->status = 'Cancelled';
+    $booking->save();
+
+    return redirect()->route('bookings.index')->with('success', 'Booking cancelled successfully.');
+}
+
+
     // Store a newly created booking in storage
     public function store(Request $request)
     {
@@ -102,7 +119,7 @@ class BookingController extends Controller
     public function updateStatus(Request $request, $id)
     {
         $request->validate([
-            'status' => 'required|string|in:pending,accepted,denied',
+            'status' => 'required|string|in:pending,accepted,denied,cancelled',
         ]);
     
         \Log::info('Request to update status for booking ID: ' . $id);
@@ -164,32 +181,29 @@ public function showBookingForm($space_id)
 
 
     
-    public function submitBookingForm(Request $request, $space_id)
-    {
-        // Validation
-        $request->validate([
-            'full_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone_number' => 'required|string|max:20',
-            'booking_date' => 'required|date', // Validate booking date
-            // Add more fields and validation rules as needed
-        ]);
+public function submitBookingForm(Request $request, $space_id)
+{
+    $space = Space::find($space_id);
+    $total_price = $space->price; // Assuming you have a price column in your spaces table
 
-        // Create booking
-        $booking = new Booking();
-        $booking->space_id = $space_id;
-        $booking->full_name = $request->input('full_name');
-        $booking->email = $request->input('email');
-        $booking->phone_number = $request->input('phone_number');
-        $booking->booking_date = $request->input('booking_date'); // Capture booking date
-        $booking->status = 'Pending'; // Set initial status
+    Booking::create([
+        'space_id' => $space->space_id,
+        'space_name' => $space->space_name,
+        'provider_id' => $space->provider_id,
+        'user_id' => Auth::id(),
+        'full_name' => Auth::user()->name,
+        'phone_number' => $request->phone_number,
+        'email' => $request->email,
+        'start_date' => $request->start_date,
+        'end_date' => $request->end_date,
+        'location' => $space->location,
+        'status' => 'pending',
+        'total_price' => $total_price,
+    ]);
 
-        // Save booking
-        $booking->save();
+    return redirect()->route('bookings.index');
+}
 
-        // Redirect to bookings index page with success message
-        return redirect()->route('bookings.index')->with('success', 'Booking submitted successfully!');
-    }
 
 
     // Remove the specified booking from storage

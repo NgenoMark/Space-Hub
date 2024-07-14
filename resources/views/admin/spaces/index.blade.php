@@ -4,7 +4,7 @@
             {{ __('My Spaces') }}
         </h2>
         <div class="flex space-x-8 mt-4 ml-4">
-            <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+            <x-nav-link href="{{ route('admin') }}" :active="request()->routeIs('admin')">
                 {{ __('Home Page') }}
             </x-nav-link>
             <x-nav-link href="{{ route('admin.spaces.index') }}" :active="request()->routeIs('admin.spaces.index')">
@@ -47,7 +47,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $space->price }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <a href="{{ route('admin.spaces.edit', ['id' => $space->space_id]) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                                        <form method="POST" action="{{ route('admin.spaces.destroy', ['id' => $space->space_id]) }}" style="display: inline;">
+                                        <form method="POST" action="{{ route('admin.spaces.destroy', ['id' => $space->space_id]) }}" style="display: inline;" onsubmit="return confirmDelete()">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="text-red-600 hover:text-red-900 ml-2">Delete</button>
@@ -61,4 +61,10 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function confirmDelete() {
+            return confirm('Are you sure you want to delete this space?');
+        }
+    </script>
 </x-app-layout>

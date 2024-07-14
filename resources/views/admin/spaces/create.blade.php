@@ -4,7 +4,7 @@
             {{ __('Create a Space') }}
         </h2>
         <div class="flex space-x-8 mt-4 ml-4">
-            <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+            <x-nav-link href="{{ route('admin') }}" :active="request()->routeIs('admin')">
                 {{ __('Home Page') }}
             </x-nav-link>
             <x-nav-link href="{{ route('admin.spaces.index') }}" :active="request()->routeIs('admin.spaces.index')">
@@ -23,7 +23,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    <form method="POST" action="{{ route('admin.spaces.store') }}">
+                    <form method="POST" action="{{ route('admin.spaces.store') }}" enctype="multipart/form-data">
                         @csrf
 
                         <!-- Space Name -->
@@ -60,6 +60,12 @@
                         <div class="mt-4">
                             <x-label for="price" :value="__('Price')" />
                             <x-input id="price" class="block mt-1 w-full" type="text" name="price" :value="old('price')" required />
+                        </div>
+
+                        <!-- Images -->
+                        <div class="mt-4">
+                            <x-label for="images" :value="__('Images')" />
+                            <input id="images" class="block mt-1 w-full" type="file" name="images[]" multiple />
                         </div>
 
                         <div class="flex items-center justify-end mt-4">
