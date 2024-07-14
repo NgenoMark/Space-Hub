@@ -6,9 +6,55 @@ use Illuminate\Http\Request;
 use App\Models\Space;
 use Illuminate\Support\Facades\Auth;
 
+use App\Models\Booking;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class AdminSpaceController extends Controller
 {
+
+
+    public function getBookingAnalysisData()
+    {
+        try {
+            // Fetching unique space names and their booking counts
+            $bookingData = Booking::selectRaw('space_name, count(*) as booking_count')
+                ->groupBy('space_name')
+                ->get();
+    
+            // Separate space names and booking counts into separate arrays
+            $spaceNames = $bookingData->pluck('space_name')->toArray();
+            $bookingCounts = $bookingData->pluck('booking_count')->toArray();
+    
+            return response()->json([
+                'spaceNames' => $spaceNames,
+                'bookingCounts' => $bookingCounts,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+    
+
+public function incomeGraphData()
+{
+    $bookings = Booking::select(DB::raw('DATE(start_date) as date'), DB::raw('SUM(total_price) as total_income'))
+                    ->groupBy('date')
+                    ->orderBy('date')
+                    ->get();
+
+    $labels = $bookings->pluck('date')->map(function ($date) {
+        return Carbon::parse($date)->format('M d'); // Format date for display
+    });
+
+    $incomeData = $bookings->pluck('total_income');
+
+    return response()->json([
+        'labels' => $labels,
+        'incomeData' => $incomeData,
+    ]);
+}
+
     public function index()
     {
         // Retrieve spaces owned by the authenticated admin
