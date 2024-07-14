@@ -22,7 +22,7 @@
     </div>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto sm:px-4 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <h2 class="text-2xl font-bold mb-4">My Bookings</h2>
@@ -33,28 +33,28 @@
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead>
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th scope="col" class="px-4 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Space Name
                                     </th>
-                                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th scope="col" class="px-4 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Full Name
                                     </th>
-                                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th scope="col" class="px-4 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Email
                                     </th>
-                                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th scope="col" class="px-4 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Phone Number
                                     </th>
-                                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th scope="col" class="px-4 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Start Date
                                     </th>
-                                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th scope="col" class="px-4 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         End Date
                                     </th>
-                                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th scope="col" class="px-4 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Status
                                     </th>
-                                    <th scope="col" class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th scope="col" class="px-4 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Action
                                     </th>
                                 </tr>
@@ -62,25 +62,25 @@
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @foreach ($bookings as $booking)
                                     <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
                                             {{ $booking->space_name }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
                                             {{ $booking->full_name }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
                                             {{ $booking->email }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
                                             {{ $booking->phone_number }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
                                             {{ $booking->start_date }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
                                             {{ $booking->end_date }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900
+                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900
                                             @if($booking->status === 'Accepted') rounded-lg @else rounded-md @endif
                                             @if($booking->status === 'Accepted') bg-green-200
                                             @elseif($booking->status === 'Denied') bg-red-200
@@ -89,7 +89,7 @@
                                             @endif">
                                             {{ $booking->status }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
                                             <form id="cancel-booking-{{ $booking->booking_id }}" action="{{ route('bookings.cancel', $booking->booking_id) }}" method="POST" style="display: none;">
                                                 @csrf
                                                 @method('PATCH')
