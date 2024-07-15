@@ -39,6 +39,7 @@ class AdminSpaceController extends Controller
 public function incomeGraphData()
 {
     $bookings = Booking::select(DB::raw('DATE(start_date) as date'), DB::raw('SUM(total_price) as total_income'))
+                    ->where('status', 'Accepted')
                     ->groupBy('date')
                     ->orderBy('date')
                     ->get();
@@ -89,10 +90,16 @@ public function incomeGraphData()
     public function destroy($id)
     {
         $space = Space::findOrFail($id);
+    
+        // Delete related bookings
+        $space->bookings()->delete();
+    
+        // Delete the space
         $space->delete();
-
-        return redirect()->route('admin.spaces.index')->with('success', 'Space deleted successfully.');
+    
+        return redirect()->route('admin.spaces.index')->with('success', 'Space and related bookings deleted successfully.');
     }
+    
 
     public function create()
     {
